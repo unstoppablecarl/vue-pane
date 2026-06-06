@@ -1,0 +1,191 @@
+<script setup lang="ts">
+import { ref, computed, onMounted, watch } from 'vue'
+import PLabel from './PLabel.vue'
+
+const model = defineModel<{ x: number, y: number }>({ required: true })
+const { label, min = -1, max = 1 } = defineProps<{
+  label?: string
+  min?: number
+  max?: number
+}>()
+
+const isOpen = ref(false)
+const panelRef = ref<HTMLElement | null>(null)
+const canvasRef = ref<HTMLCanvasElement | null>(null)
+const canvasSize = 160
+
+const localX = computed(() => model.value.x.toFixed(3))
+const localY = computed(() => model.value.y.toFixed(3))
+
+function clamp(val: number): number {
+  return Math.max(min, Math.min(max, val))
+}
+
+function onXBlur(e: Event) {
+  const val = parseFloat((e.target as HTMLInputElement).value)
+  if (!isNaN(val)) model.value = { x: clamp(val), y: model.value.y }
+}
+
+function onYBlur(e: Event) {
+  const val = parseFloat((e.target as HTMLInputElement).value)
+  if (!isNaN(val)) model.value = { x: model.value.x, y: clamp(val) }
+}
+
+function toggle() {
+  isOpen.value = !isOpen.value
+}
+
+watch(isOpen, (open) => {
+  const el = panelRef.value
+  if (!el) return
+  if (open) {
+    el.style.height = el.scrollHeight + 'px'
+    el.addEventListener('transitionend', (e: TransitionEvent) => {
+      if (e.propertyName === 'height') el.style.height = 'auto'
+    }, { once: true })
+  } else {
+    el.style.height = el.scrollHeight + 'px'
+    void el.offsetHeight
+    el.style.height = '0'
+  }
+})
+
+function drawCanvas() {
+  const canvas = canvasRef.value
+  if (!canvas) return
+  const ctx = canvas.getContext('2d')!
+  const size = canvasSize
+  ctx.clearRect(0, 0, size, size)
+  ctx.fillStyle = 'rgba(0,0,0,0.3)'
+  ctx.fillRect(0, 0, size, size)
+  ctx.strokeStyle = 'rgba(255,255,255,0.1)'
+  ctx.lineWidth = 1
+  ctx.beginPath()
+  ctx.moveTo(size / 2, 0)
+  ctx.lineTo(size / 2, size)
+  ctx.moveTo(0, size / 2)
+  ctx.lineTo(size, size / 2)
+  ctx.stroke()
+}
+
+onMounted(() => {
+  drawCanvas()
+})
+
+const crosshairX = computed(() => {
+  const range = max - min
+  return ((model.value.x - min) / range) * canvasSize
+})
+
+const crosshairY = computed(() => {
+  const range = max - min
+  return canvasSize - ((model.value.y - min) / range) * canvasSize
+})
+
+let canvasDragging = false
+
+function posToValue(e: PointerEvent) {
+  const canvas = canvasRef.value!
+  const rect = canvas.getBoundingClientRect()
+  const rx = (e.clientX - rect.left) / rect.width
+  const ry = 1 - (e.clientY - rect.top) / rect.height
+  const range = max - min
+  return {
+    x: clamp(min + rx * range),
+    y: clamp(min + ry * range),
+  }
+}
+
+function onCanvasDown(e: PointerEvent) {
+  e.preventDefault()
+  ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+  canvasDragging = true
+  model.value = posToValue(e)
+}
+
+function onCanvasMove(e: PointerEvent) {
+  if (!canvasDragging) return
+  model.value = posToValue(e)
+}
+
+function onCanvasUp() {
+  canvasDragging = false
+}
+</script>
+<template>
+  <PLabel :label="label">
+    <div
+      class="vp-point-2d"
+      :class="{ 'vp-point-2d--expanded': isOpen }"
+    >
+      <div class="vp-point-2d__header">
+        <button
+          class="vp-point-2d__btn"
+          @click="toggle"
+        >
+          <svg viewBox="0 0 16 16">
+            <path d="M8 2 L8 14 M2 8 L14 8" />
+            <circle
+              cx="8"
+              cy="8"
+              r="1.5"
+            />
+          </svg>
+        </button>
+        <div class="vp-point-2d__inputs">
+          <div style="display:flex; gap:2px">
+            <div
+              class="vp-text vp-text--number vp-text--first"
+              style="flex:1"
+            >
+              <input
+                class="vp-text__input"
+                type="text"
+                :value="localX"
+                @blur="onXBlur"
+                @keydown.enter="(e) => (e.target as HTMLElement).blur()"
+              >
+            </div>
+            <div
+              class="vp-text vp-text--number vp-text--last"
+              style="flex:1"
+            >
+              <input
+                class="vp-text__input"
+                type="text"
+                :value="localY"
+                @blur="onYBlur"
+                @keydown.enter="(e) => (e.target as HTMLElement).blur()"
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        ref="panelRef"
+        class="vp-point-2d__picker-panel"
+      >
+        <div class="vp-point-2d__picker-wrap">
+          <canvas
+            ref="canvasRef"
+            class="vp-point-2d__canvas"
+            :height="canvasSize"
+            :width="canvasSize"
+            @pointerdown="onCanvasDown"
+            @pointermove="onCanvasMove"
+            @pointerup="onCanvasUp"
+            @pointercancel="onCanvasUp"
+          />
+          <div
+            class="vp-point-2d__crosshair-h"
+            :style="{ top: crosshairY + 'px' }"
+          />
+          <div
+            class="vp-point-2d__crosshair-v"
+            :style="{ left: crosshairX + 'px' }"
+          />
+        </div>
+      </div>
+    </div>
+  </PLabel>
+</template>

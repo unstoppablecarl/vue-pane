@@ -1,0 +1,68 @@
+@use '../../common/defs';
+
+%vp-container_children {
+	// Bottom spacing of last container
+	& > .vp-container.#{defs.$last} {
+		margin-bottom: calc(-1 * #{defs.cssVar('container-v-padding')});
+	}
+	// Bottom left radius of last folder
+	& > .vp-folder.#{defs.$last} .vp-folder__content {
+		border-bottom-left-radius: 0;
+	}
+	& > .vp-folder.#{defs.$last} .vp-folder__title {
+		border-bottom-left-radius: 0;
+	}
+
+	// Spacing between two blades
+	& > *:not(.#{defs.$first}) {
+		margin-top: defs.cssVar('container-unit-spacing');
+	}
+	// Top spacing of folder and separator
+	& > .vp-separator:not(.#{defs.$first}),
+	& > .vp-container:not(.#{defs.$first}) {
+		margin-top: defs.cssVar('container-v-padding');
+	}
+	// Bottom spacing of separator and containers
+	& > .vp-separator + *:not(.#{defs.$hidden}),
+	& > .vp-container + *:not(.#{defs.$hidden}) {
+		margin-top: defs.cssVar('container-v-padding');
+	}
+	// Spacing between two containers and separators
+	& > .vp-separator:not(.#{defs.$hidden}) + .vp-separator,
+	& > .vp-container:not(.#{defs.$hidden}) + .vp-container {
+		margin-top: 0;
+	}
+}
+
+%vp-container_subcontainers {
+	// Left spacing of subcontainers
+	& > .vp-container {
+		margin-left: 4px;
+	}
+	// Left border radius of subfolder
+	& > .vp-folder > .vp-folder__title {
+		border-top-left-radius: defs.cssVar('blade-border-radius');
+		border-bottom-left-radius: defs.cssVar('blade-border-radius');
+	}
+	& > .vp-folder.vp-folder--expanded > .vp-folder__title {
+		border-bottom-left-radius: 0;
+	}
+	& .vp-folder > .vp-folder__content {
+		border-bottom-left-radius: defs.cssVar('blade-border-radius');
+	}
+	// Top left border radius of subfolder after container
+	& > .vp-container + .vp-folder > .vp-folder__title {
+		border-top-left-radius: 0;
+	}
+	// Top left border radius of subtab after container
+	& > .vp-container + .vp-tab > .vp-tab__title-bar {
+		border-top-left-radius: 0;
+	}
+	// Left border radius of subtab
+	& > .vp-tab > .vp-tab__title-bar {
+		border-top-left-radius: defs.cssVar('blade-border-radius');
+	}
+	& .vp-tab > .vp-tab__content {
+		border-bottom-left-radius: defs.cssVar('blade-border-radius');
+	}
+}

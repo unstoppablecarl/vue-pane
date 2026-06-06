@@ -1,0 +1,74 @@
+@use '../vp';
+
+.vp-tab {
+	position: relative;
+
+	&__title-bar {
+		display: flex;
+		overflow: hidden;
+	}
+	&__indent {
+		bottom: 0;
+		color: vp.cssVar('container-bg');
+		left: 0;
+		overflow: hidden;
+		position: absolute;
+		top: vp.cssVar('container-unit-size');
+		width: max(vp.cssVar('base-border-radius'), 4px);
+
+		&::before {
+			background-color: currentColor;
+			bottom: 0;
+			content: '';
+			left: 0;
+			position: absolute;
+			top: 0;
+			width: 4px;
+		}
+	}
+}
+
+.vp-tab-item {
+	flex: 1;
+
+	&__btn {
+		@extend %vp-resetUserAgent;
+
+		background-color: vp.cssVar('button-bg');
+		cursor: pointer;
+		display: block;
+		height: vp.cssVar('container-unit-size');
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		width: 100%;
+
+		&:hover { background-color: vp.cssVar('button-bg-hover'); }
+		&:focus { background-color: vp.cssVar('button-bg-focus'); }
+		&:active { background-color: vp.cssVar('button-bg-active'); }
+	}
+	&--selected &__btn {
+		background-color: vp.cssVar('container-bg');
+		color: vp.cssVar('container-fg');
+	}
+	&__label {
+		color: vp.cssVar('button-fg');
+		font-size: 11px;
+		font-weight: bold;
+		line-height: vp.cssVar('container-unit-size');
+		padding: 0 vp.cssVar('blade-h-padding');
+		text-align: center;
+	}
+	&--selected &__label {
+		color: vp.cssVar('container-fg');
+	}
+}
+
+.vp-tab-page {
+	&__content {
+		@extend %vp-container_children;
+		@extend %vp-container_subcontainers;
+
+		padding: vp.cssVar('container-v-padding') vp.cssVar('container-h-padding');
+	}
+}

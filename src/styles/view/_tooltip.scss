@@ -1,0 +1,16 @@
+@use '../vp';
+
+.vp-tooltip {
+	background-color: vp.cssVar('base-bg');
+	border-radius: vp.cssVar('blade-border-radius');
+	box-shadow: vp.cssVar('base-shadow');
+	color: vp.cssVar('container-fg');
+	font-size: 11px;
+	line-height: 1.5;
+	max-width: 200px;
+	padding: 4px 8px;
+	pointer-events: none;
+	position: absolute;
+	white-space: pre-wrap;
+	z-index: vp.$z-index-picker;
+}

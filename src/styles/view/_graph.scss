@@ -1,0 +1,11 @@
+@use '../vp';
+
+.vp-graph {
+	position: relative;
+	&__svg {
+		@extend %vp-monitor;
+		display: block; height: calc(vp.cssVar('container-unit-size') * 3);
+		polyline { fill: none; stroke: vp.cssVar('monitor-fg'); stroke-linejoin: round; }
+	}
+	&.vp--disabled &__svg { opacity: 0.5; }
+}
