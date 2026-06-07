@@ -1,13 +1,20 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 import PLabel from './PLabel.vue'
 
 const model = defineModel<number>({ required: true })
-const { label, min = 0, max = 1, step = 0.01 } = defineProps<{
+const {
+  label,
+  tooltip,
+  min = 0,
+  max = 1,
+  step = null,
+} = defineProps<{
   label?: string
+  tooltip?: string
   min?: number
   max?: number
-  step?: number
+  step?: number | null
 }>()
 
 const trackRef = ref<HTMLElement | null>(null)
@@ -29,8 +36,8 @@ function valueFromPointer(e: PointerEvent): number {
   const rect = el.getBoundingClientRect()
   const ratio = (e.clientX - rect.left) / rect.width
   const raw = min + ratio * (max - min)
-  const stepped = Math.round(raw / step) * step
-  return clamp(stepped)
+  if (step === null) return clamp(raw)
+  return clamp(Math.round(raw / step) * step)
 }
 
 function onTrackPointerDown(e: PointerEvent) {
@@ -50,20 +57,21 @@ function onPointerUp() {
 }
 
 function onKeydown(e: KeyboardEvent) {
+  const increment = step ?? (max - min) / 100
   if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
     e.preventDefault()
-    const multiplier = e.shiftKey ? 10 : 1
-    model.value = clamp(model.value + step * multiplier)
+    model.value = clamp(model.value + increment * (e.shiftKey ? 10 : 1))
   } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
     e.preventDefault()
-    const multiplier = e.shiftKey ? 10 : 1
-    model.value = clamp(model.value - step * multiplier)
+    model.value = clamp(model.value - increment * (e.shiftKey ? 10 : 1))
   }
 }
 </script>
-
 <template>
-  <PLabel :label="label">
+  <PLabel
+    :label="label"
+    :tooltip="tooltip"
+  >
     <div class="vp-slider">
       <div
         ref="trackRef"

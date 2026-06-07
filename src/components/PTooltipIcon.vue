@@ -1,0 +1,30 @@
+<template>
+  <svg
+    viewBox="0 0 16 16"
+    width="10"
+    height="10"
+    fill="none"
+  >
+    <circle
+      cx="8"
+      cy="8"
+      r="7"
+      stroke="currentColor"
+      stroke-width="1.5"
+    />
+    <circle
+      cx="8"
+      cy="5.5"
+      r="1"
+      fill="currentColor"
+    />
+    <rect
+      x="7"
+      y="7.5"
+      width="2"
+      height="4"
+      rx="1"
+      fill="currentColor"
+    />
+  </svg>
+</template>

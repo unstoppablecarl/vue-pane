@@ -1,9 +1,15 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import { resolve } from 'path'
 
 export default defineConfig({
   plugins: [vue()],
   resolve: {
-    conditions: ['source'],
+    alias: {
+      'vue-pane': resolve(__dirname, '../src/index.ts'),
+    },
+  },
+  optimizeDeps: {
+    exclude: ['vue-pane'],
   },
 })

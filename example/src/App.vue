@@ -38,41 +38,109 @@ const activeTab = ref(0)
 <template>
   <div class="container">
     <VPane title="Debug" style="width: 300px;">
-      <PText v-model="name" label="Name" />
-      <PNumber v-model="count" label="Count" :min="0" :max="100" />
-      <PNumber v-model="speed" label="Speed" :min="0" :max="10" :step="0.1" />
+      <div class="vp-tooltip">testing</div>
+      <PText
+        v-model="name"
+        label="Name"
+        tooltip="The display name shown in the output"
+      />
+      <PNumber
+        v-model="count"
+        label="Count"
+        :min="0"
+        :max="100"
+        tooltip="Drag or type to adjust. Arrow keys ±1, Shift+Arrow ±10"
+      />
+      <PNumber
+        v-model="speed"
+        label="Speed"
+        :min="0"
+        :max="10"
+        :step="0.1"
+        tooltip="Playback speed multiplier (0–10)"
+      />
       <PSeparator />
-      <PCheckbox v-model="enabled" label="Enabled" />
-      <PSelect v-model="mode" :options="modeOptions" label="Mode" />
-      <PButton label="Reset" @click="count = 0; speed = 1.5" />
-      <PMonitor :value="`${name} × ${count}`" label="Output" />
-      <PMonitorMulti :value="`Name: ${name}\nCount: ${count}\nSpeed: ${speed}`" label="Multi" />
+      <PCheckbox
+        v-model="enabled"
+        label="Enabled"
+        tooltip="Toggle the effect on or off"
+      />
+      <PSelect
+        v-model="mode"
+        :options="modeOptions"
+        label="Mode"
+        tooltip="Easing function applied to the animation"
+      />
+      <PButton
+        label="Reset"
+        tooltip="Restore count and speed to defaults"
+        @click="count = 0; speed = 1.5"
+      />
+      <PMonitor
+        :value="`${name} × ${count}`"
+        label="Output"
+        tooltip="Live computed output value"
+      />
+      <PMonitorMulti
+        :value="`Name: ${name}\nCount: ${count}\nSpeed: ${speed}`"
+        label="Multi"
+        tooltip="All current values as a formatted summary"
+      />
 
-      <PFolder title="Transform" name="transform">
-        <PNumber v-model="count" label="X" />
-        <PNumber v-model="count" label="Y" />
-        <PFolder title="Nested" name="nested">
-          <PText v-model="name" label="Label" />
+      <PFolder
+        title="Transform"
+        name="transform"
+        tooltip="Position and rotation controls"
+      >
+        <PNumber v-model="count" label="X" tooltip="Horizontal offset in units" />
+        <PNumber v-model="count" label="Y" tooltip="Vertical offset in units" />
+        <PFolder title="Nested" name="nested" tooltip="Additional nested controls">
+          <PText v-model="name" label="Label" tooltip="Custom label text" />
         </PFolder>
       </PFolder>
     </VPane>
 
     <VPane style="width: 300px;">
-      <PText v-model="name" label="No-title pane" />
+      <PText v-model="name" label="No-title pane" tooltip="This pane has no collapsible title" />
     </VPane>
 
     <VPane title="Slider & Color" style="width: 300px;">
-      <PSlider v-model="sliderVal" label="Slider" :min="0" :max="1" :step="0.01" />
-      <PColor v-model="color" label="Color" />
+      <PSlider
+        v-model="sliderVal"
+        label="Slider"
+        :min="0"
+        :max="1"
+        :step="0.01"
+        tooltip="Drag the track to set a value between 0 and 1"
+      />
+      <PColor
+        v-model="color"
+        label="Color"
+        tooltip="Click the swatch to open the color picker"
+      />
     </VPane>
 
     <VPane title="Point 2D & Graph" style="width: 300px;">
-      <PPoint2d v-model="point" label="Point" :min="-2" :max="2" />
-      <PGraph :values="graphValues" label="Graph" />
+      <PPoint2d
+        v-model="point"
+        label="Point"
+        :min="-2"
+        :max="2"
+        tooltip="Click the crosshair icon to open the 2D canvas picker"
+      />
+      <PGraph
+        :values="graphValues"
+        label="Graph"
+        tooltip="Sparkline of the last 8 sampled values"
+      />
     </VPane>
 
     <VPane title="Tabs" style="width: 300px;">
-      <PTab :tabs="['Settings', 'Info']" v-model="activeTab">
+      <PTab
+        v-model="activeTab"
+        :tabs="['Settings', 'Info']"
+        :tooltips="['Configure parameters', 'View current state']"
+      >
         <template #Settings>
           <PNumber v-model="count" label="Count" :min="0" :max="100" />
           <PCheckbox v-model="enabled" label="Enabled" />

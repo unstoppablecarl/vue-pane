@@ -1,41 +1,56 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useElementPositions } from '../composables/useElementPositions'
 import { useFoldable } from '../composables/useFoldable'
+import { usePaneConfig } from '../composables/usePaneConfig'
+import { useTooltip } from '../composables/useTooltip'
 
-const expandedModel = defineModel<boolean>('expanded', { default: true })
-const { title, name, disabled, hidden } = defineProps<{
+const expandedModel = defineModel<boolean>('expanded', { default: undefined })
+const {
+  title,
+  tooltip,
+  id,
+  disabled,
+} = defineProps<{
   title: string
-  name?: string
+  tooltip?: string
+  id?: string
   disabled?: boolean
-  hidden?: boolean
 }>()
 
+const key = id ?? title
+const config = usePaneConfig()
 const containerRef = ref<HTMLElement | null>(null)
 const { isExpanded, toggle } = useFoldable(
   containerRef,
-  () => expandedModel.value,
-  name ? `vp-folder-${name}` : undefined,
-  (val) => { expandedModel.value = val },
+  expandedModel,
+  key ? `vp-folder-${key}` : undefined,
 )
-useElementPositions(containerRef)
+
+const { floatingEl, floatingStyles, visible, show, hide } = useTooltip()
 </script>
 
 <template>
   <div
-    class="vp-folder"
+    class="vp-folder vp-container"
     :class="{
       'vp-folder--expanded': isExpanded,
       'vp--disabled': disabled,
-      'vp--hidden': hidden,
     }"
   >
     <button
       class="vp-folder__title"
       @click="toggle"
     >
-      <div class="vp-folder__title-text">
+      <div
+        class="vp-folder__title-text"
+        @mouseenter="tooltip && show($event)"
+        @mouseleave="hide"
+      >
         {{ title }}
+        <component
+          :is="config.tooltipIcon"
+          v-if="tooltip && config.tooltipIcon"
+        />
       </div>
       <div class="vp-folder__chevron" />
     </button>
@@ -46,5 +61,18 @@ useElementPositions(containerRef)
     >
       <slot />
     </div>
+    <Teleport
+      v-if="tooltip"
+      to="body"
+    >
+      <div
+        v-if="visible"
+        ref="floatingEl"
+        class="vp-tooltip"
+        :style="floatingStyles"
+      >
+        {{ tooltip }}
+      </div>
+    </Teleport>
   </div>
 </template>

@@ -1,26 +1,35 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { useElementPositions } from '../composables/useElementPositions'
 import { useFoldable } from '../composables/useFoldable'
+import { type PaneConfig, providePaneConfig } from '../composables/usePaneConfig'
 
-const expandedModel = defineModel<boolean>('expanded', { default: true })
-const { title, disabled, hidden } = defineProps<{
+const expandedModel = defineModel<boolean>('expanded', { default: undefined })
+
+const {
+  title,
+  id,
+  disabled,
+  config,
+} = defineProps<{
   title?: string
+  id?: string
   disabled?: boolean
-  hidden?: boolean
+  config?: PaneConfig
 }>()
 
+if (config) {
+  providePaneConfig(config)
+}
+
+const key = id ?? title
 const hasTitle = computed(() => !!title)
 const containerRef = ref<HTMLElement | null>(null)
 const { isExpanded, toggle } = useFoldable(
   containerRef,
-  () => (title ? expandedModel.value : true),
-  undefined,
-  (val) => { if (title) expandedModel.value = val },
+  expandedModel,
+  key ? `vp-pane-${key}` : undefined,
 )
-useElementPositions(containerRef)
 </script>
-
 <template>
   <div
     class="vp-pane"
@@ -28,7 +37,6 @@ useElementPositions(containerRef)
       'vp-pane--expanded': isExpanded,
       'vp-pane--no-title': !hasTitle,
       'vp--disabled': disabled,
-      'vp--hidden': hidden,
     }"
   >
     <button
@@ -47,7 +55,6 @@ useElementPositions(containerRef)
     </div>
   </div>
 </template>
-
 <style lang="scss">
 @use '../styles/index.scss';
 </style>

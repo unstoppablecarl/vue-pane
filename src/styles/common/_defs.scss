@@ -5,11 +5,6 @@ $prefix: 'vp';
 
 // Global state classes
 $disabled: #{$prefix}--disabled;
-$first: #{$prefix}--first;
-$hidden: #{$prefix}--hidden;
-$last: #{$prefix}--last;
-$very-first: #{$prefix}--very-first;
-$very-last: #{$prefix}--very-last;
 
 // Common Sass variables
 $fold-transition-duration: 0.2s;

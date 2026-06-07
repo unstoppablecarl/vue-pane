@@ -1,10 +1,17 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import { usePickerFold } from '../composables/usePickerFold'
 import PLabel from './PLabel.vue'
 
 const model = defineModel<{ x: number, y: number }>({ required: true })
-const { label, min = -1, max = 1 } = defineProps<{
+const {
+  label,
+  tooltip,
+  min = -1,
+  max = 1,
+} = defineProps<{
   label?: string
+  tooltip?: string
   min?: number
   max?: number
 }>()
@@ -12,6 +19,8 @@ const { label, min = -1, max = 1 } = defineProps<{
 const isOpen = ref(false)
 const panelRef = ref<HTMLElement | null>(null)
 const canvasRef = ref<HTMLCanvasElement | null>(null)
+
+const isComplete = usePickerFold(panelRef, isOpen)
 const canvasSize = 160
 
 const localX = computed(() => model.value.x.toFixed(3))
@@ -34,21 +43,6 @@ function onYBlur(e: Event) {
 function toggle() {
   isOpen.value = !isOpen.value
 }
-
-watch(isOpen, (open) => {
-  const el = panelRef.value
-  if (!el) return
-  if (open) {
-    el.style.height = el.scrollHeight + 'px'
-    el.addEventListener('transitionend', (e: TransitionEvent) => {
-      if (e.propertyName === 'height') el.style.height = 'auto'
-    }, { once: true })
-  } else {
-    el.style.height = el.scrollHeight + 'px'
-    void el.offsetHeight
-    el.style.height = '0'
-  }
-})
 
 function drawCanvas() {
   const canvas = canvasRef.value
@@ -113,10 +107,13 @@ function onCanvasUp() {
 }
 </script>
 <template>
-  <PLabel :label="label">
+  <PLabel
+    :label="label"
+    :tooltip="tooltip"
+  >
     <div
       class="vp-point-2d"
-      :class="{ 'vp-point-2d--expanded': isOpen }"
+      :class="{ 'vp-point-2d--expanded': isOpen, 'vp-point-2d--complete': isComplete }"
     >
       <div class="vp-point-2d__header">
         <button

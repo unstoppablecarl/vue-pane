@@ -4,16 +4,46 @@
 	position: relative;
 
 	&__title-bar {
+		align-items: flex-end;
+		color: vp.cssVar('container-bg');
 		display: flex;
 		overflow: hidden;
+		position: relative;
+
+		&:hover {
+			color: vp.cssVar('container-bg-hover');
+		}
+		&:has(*:focus) {
+			color: vp.cssVar('container-bg-focus');
+		}
+		&:has(*:active) {
+			color: vp.cssVar('container-bg-active');
+		}
+
+		// Bottom border line
+		&::before {
+			background-color: currentColor;
+			bottom: 0;
+			content: '';
+			height: 2px;
+			left: 0;
+			pointer-events: none;
+			position: absolute;
+			right: 0;
+		}
 	}
+
+	&.#{vp.$disabled} &__title-bar::before {
+		opacity: 0.5;
+	}
+
 	&__indent {
 		bottom: 0;
 		color: vp.cssVar('container-bg');
 		left: 0;
 		overflow: hidden;
 		position: absolute;
-		top: vp.cssVar('container-unit-size');
+		top: calc(#{vp.cssVar('container-unit-size')} + 4px);
 		width: max(vp.cssVar('base-border-radius'), 4px);
 
 		&::before {
@@ -26,41 +56,76 @@
 			width: 4px;
 		}
 	}
+
+	&__title-bar:hover + &__indent {
+		color: vp.cssVar('container-bg-hover');
+	}
+	&__title-bar:has(*:focus) + &__indent {
+		color: vp.cssVar('container-bg-focus');
+	}
+	&__title-bar:has(*:active) + &__indent {
+		color: vp.cssVar('container-bg-active');
+	}
+	&.#{vp.$disabled} > &__indent {
+		opacity: 0.5;
+	}
 }
 
 .vp-tab-item {
 	flex: 1;
+	min-width: 0;
+	position: relative;
+
+	& + & {
+		margin-left: 2px;
+	}
 
 	&__btn {
 		@extend %vp-resetUserAgent;
 
-		background-color: vp.cssVar('button-bg');
 		cursor: pointer;
 		display: block;
-		height: vp.cssVar('container-unit-size');
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
+		padding-left: calc(#{vp.cssVar('container-h-padding')} + 4px);
+		padding-right: calc(#{vp.cssVar('container-h-padding')} + 4px);
+		position: relative;
 		width: 100%;
 
-		&:hover { background-color: vp.cssVar('button-bg-hover'); }
-		&:focus { background-color: vp.cssVar('button-bg-focus'); }
-		&:active { background-color: vp.cssVar('button-bg-active'); }
+		&:disabled {
+			opacity: 0.5;
+		}
+
+		// Tab background — inset leaves 2px at bottom for the title-bar border to show through
+		&::before {
+			background-color: vp.cssVar('container-bg');
+			content: '';
+			inset: 0 0 2px;
+			pointer-events: none;
+			position: absolute;
+		}
+		&:hover::before {
+			background-color: vp.cssVar('container-bg-hover');
+		}
+		&:focus::before {
+			background-color: vp.cssVar('container-bg-focus');
+		}
+		&:active::before {
+			background-color: vp.cssVar('container-bg-active');
+		}
 	}
-	&--selected &__btn {
-		background-color: vp.cssVar('container-bg');
-		color: vp.cssVar('container-fg');
-	}
+
 	&__label {
-		color: vp.cssVar('button-fg');
-		font-size: 11px;
-		font-weight: bold;
-		line-height: vp.cssVar('container-unit-size');
-		padding: 0 vp.cssVar('blade-h-padding');
-		text-align: center;
-	}
-	&--selected &__label {
 		color: vp.cssVar('container-fg');
+		height: calc(#{vp.cssVar('container-unit-size')} + 4px);
+		line-height: calc(#{vp.cssVar('container-unit-size')} + 4px);
+		opacity: 0.5;
+		overflow: hidden;
+		position: relative;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	&--selected &__label {
+		opacity: 1;
 	}
 }
 
@@ -69,6 +134,8 @@
 		@extend %vp-container_children;
 		@extend %vp-container_subcontainers;
 
-		padding: vp.cssVar('container-v-padding') vp.cssVar('container-h-padding');
+		padding-bottom: vp.cssVar('container-v-padding');
+		padding-left: 4px;
+		padding-top: vp.cssVar('container-v-padding');
 	}
 }

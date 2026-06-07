@@ -3,8 +3,15 @@ import { ref, watch } from 'vue'
 import PLabel from './PLabel.vue'
 
 const model = defineModel<number>({ required: true })
-const { label, min, max, step = 1 } = defineProps<{
+const {
+  label,
+  tooltip,
+  min,
+  max,
+  step = 1,
+} = defineProps<{
   label?: string
+  tooltip?: string
   min?: number
   max?: number
   step?: number
@@ -75,9 +82,11 @@ function onKnobPointerUp() {
   isDragging.value = false
 }
 </script>
-
 <template>
-  <PLabel :label="label">
+  <PLabel
+    :label="label"
+    :tooltip="tooltip"
+  >
     <div
       class="vp-text vp-text--number"
       :class="{ 'vp-text--dragging': isDragging }"

@@ -93,12 +93,11 @@
 	opacity: 1;
 	padding-bottom: defs.cssVar('container-v-padding');
 	padding-top: defs.cssVar('container-v-padding');
-	transform: none;
 
-	// Clip subviews without `overflow: hidden` for popup elements (e.g. color picker)
+	// Allow popup elements (e.g. color picker) to overflow
 	overflow: visible;
 
-	// Delay opacity transition to avoid overflow contents
+	// Delay opacity to avoid showing overflow content during expand
 	transition: height defs.$fold-transition-duration ease-in-out,
 		opacity defs.$fold-transition-duration linear defs.$fold-transition-duration,
 		padding defs.$fold-transition-duration ease-in-out;

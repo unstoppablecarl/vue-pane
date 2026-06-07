@@ -2,13 +2,21 @@
 import PLabel from './PLabel.vue'
 
 const model = defineModel<string | number>({ required: true })
-const { label, options } = defineProps<{
+const {
+  label,
+  tooltip,
+  options,
+} = defineProps<{
   label?: string
+  tooltip?: string
   options: { value: string | number, label: string }[]
 }>()
 </script>
 <template>
-  <PLabel :label="label">
+  <PLabel
+    :label="label"
+    :tooltip="tooltip"
+  >
     <div class="vp-select">
       <select
         class="vp-select__input"

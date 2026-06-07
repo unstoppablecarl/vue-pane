@@ -15,6 +15,9 @@ import PColor from './components/PColor.vue'
 import PGraph from './components/PGraph.vue'
 import PPoint2d from './components/PPoint2d.vue'
 
+export type { PaneConfig } from './composables/usePaneConfig'
+export { usePaneConfig } from './composables/usePaneConfig'
+
 export {
   VPane,
   PFolder,
