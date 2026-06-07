@@ -91,3 +91,6 @@ function onKeydown(e: KeyboardEvent) {
     </div>
   </PLabel>
 </template>
+<style lang="scss">
+@use '../styles/view/slider';
+</style>

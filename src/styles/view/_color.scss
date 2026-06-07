@@ -8,8 +8,6 @@
 	&__text { flex: 1; margin-left: 4px; }
 
 	&__swatch-btn {
-		@extend %vp-resetUserAgent;
-
 		background-image: linear-gradient(45deg, #ccc 25%, transparent 25%),
 			linear-gradient(-45deg, #ccc 25%, transparent 25%),
 			linear-gradient(45deg, transparent 75%, #ccc 75%),

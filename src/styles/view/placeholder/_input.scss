@@ -1,8 +1,6 @@
 @use '../../common/defs';
 
 %vp-input {
-	@extend %vp-resetUserAgent;
-
 	background-color: defs.cssVar('input-bg');
 	border-radius: defs.cssVar('blade-border-radius');
 	box-sizing: border-box;

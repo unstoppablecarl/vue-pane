@@ -1,8 +1,6 @@
 @use '../../common/defs';
 
 %vp-monitor {
-	@extend %vp-resetUserAgent;
-
 	background-color: defs.cssVar('monitor-bg');
 	border-radius: defs.cssVar('blade-border-radius');
 	box-sizing: border-box;

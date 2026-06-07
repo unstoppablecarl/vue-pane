@@ -81,8 +81,6 @@
 	}
 
 	&__btn {
-		@extend %vp-resetUserAgent;
-
 		cursor: pointer;
 		display: block;
 		padding-left: calc(#{vp.cssVar('container-h-padding')} + 4px);

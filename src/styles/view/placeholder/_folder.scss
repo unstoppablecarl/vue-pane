@@ -1,8 +1,6 @@
 @use '../../common/defs';
 
 %vp-folder_title {
-	@extend %vp-resetUserAgent;
-
 	background-color: defs.cssVar('container-bg');
 	color: defs.cssVar('container-fg');
 	cursor: pointer;

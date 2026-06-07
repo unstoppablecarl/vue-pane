@@ -76,3 +76,6 @@ const { floatingEl, floatingStyles, visible, show, hide } = useTooltip()
     </Teleport>
   </div>
 </template>
+<style lang="scss">
+@use '../styles/view/folder';
+</style>

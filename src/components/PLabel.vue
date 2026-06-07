@@ -45,3 +45,6 @@ const config = usePaneConfig()
     </Teleport>
   </div>
 </template>
+<style lang="scss">
+@use '../styles/view/label';
+</style>

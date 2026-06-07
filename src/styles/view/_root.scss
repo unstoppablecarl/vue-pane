@@ -7,6 +7,18 @@
 .vp-pane {
 	@extend %vp-theming;
 
+	button, input, select, textarea {
+		appearance: none;
+		background-color: transparent;
+		border-width: 0;
+		font-family: inherit;
+		font-size: inherit;
+		font-weight: inherit;
+		margin: 0;
+		outline: none;
+		padding: 0;
+	}
+
 	background-color: vp.cssVar('base-bg');
 	border-radius: vp.cssVar('base-border-radius');
 	box-shadow: 0 2px 4px vp.cssVar('base-shadow');

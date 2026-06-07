@@ -1,12 +1,16 @@
 <script setup lang="ts">
+import { flip, offset, shift, useFloating } from '@floating-ui/vue'
 import { onMounted, onUnmounted, ref } from 'vue'
 import { ChromePicker, tinycolor } from 'vue-color'
 import 'vue-color/style.css'
-import { flip, offset, shift, useFloating } from '@floating-ui/vue'
 import PLabel from './PLabel.vue'
 
 const model = defineModel<string>({ required: true })
-const { label, tooltip, alpha = false } = defineProps<{
+const {
+  label,
+  tooltip,
+  alpha = false,
+} = defineProps<{
   label?: string
   tooltip?: string
   alpha?: boolean
@@ -98,3 +102,6 @@ onUnmounted(() => document.removeEventListener('pointerdown', onPointerDown))
     </div>
   </PLabel>
 </template>
+<style lang="scss">
+@use '../styles/view/color';
+</style>

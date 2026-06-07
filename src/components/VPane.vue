@@ -56,5 +56,6 @@ const { isExpanded, toggle } = useFoldable(
   </div>
 </template>
 <style lang="scss">
-@use '../styles/index.scss';
+@use '../styles/view/root';
+@use '../styles/view/tooltip';
 </style>

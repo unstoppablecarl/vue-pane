@@ -25,3 +25,6 @@ const {
     </div>
   </PLabel>
 </template>
+<style lang="scss">
+@use '../styles/view/monitor-multi';
+</style>

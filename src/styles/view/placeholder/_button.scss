@@ -1,8 +1,6 @@
 @use '../../common/defs';
 
 %vp-button {
-	@extend %vp-resetUserAgent;
-
 	background-color: defs.cssVar('button-bg');
 	border-radius: defs.cssVar('blade-border-radius');
 	color: defs.cssVar('button-fg');

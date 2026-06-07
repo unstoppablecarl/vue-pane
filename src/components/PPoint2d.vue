@@ -186,3 +186,6 @@ function onCanvasUp() {
     </div>
   </PLabel>
 </template>
+<style lang="scss">
+@use '../styles/view/point-2d';
+</style>

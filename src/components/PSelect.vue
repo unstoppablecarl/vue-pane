@@ -39,3 +39,6 @@ const {
     </div>
   </PLabel>
 </template>
+<style lang="scss">
+@use '../styles/view/list';
+</style>

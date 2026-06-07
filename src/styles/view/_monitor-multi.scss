@@ -1,11 +1,16 @@
 @use '../vp';
 
-.vp-monitor {
+.vp-monitor-multi {
 	&__value {
 		@extend %vp-monitor;
 
+		display: block;
+		height: calc(#{vp.cssVar('container-unit-size')} * 3);
+		line-height: vp.cssVar('container-unit-size');
 		padding-left: vp.cssVar('blade-h-padding');
 		padding-right: vp.cssVar('blade-h-padding');
+		resize: none;
+		white-space: pre;
 	}
 	&.#{vp.$disabled} &__value {
 		opacity: 0.5;

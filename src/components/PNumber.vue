@@ -109,3 +109,7 @@ function onKnobPointerUp() {
     </div>
   </PLabel>
 </template>
+<style lang="scss">
+@use '../styles/view/text';
+@use '../styles/view/number';
+</style>

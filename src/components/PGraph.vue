@@ -44,3 +44,6 @@ const polylinePoints = computed(() => {
     </div>
   </PLabel>
 </template>
+<style lang="scss">
+@use '../styles/view/graph';
+</style>
