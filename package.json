@@ -76,8 +76,5 @@
   "dependencies": {
     "@floating-ui/vue": "^1.1.11",
     "vue-color": "^3.3.3"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": ["@parcel/watcher", "vue-demi"]
   }
 }
