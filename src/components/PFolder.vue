@@ -26,7 +26,7 @@ const { isExpanded, toggle } = useFoldable(
   key ? `vp-folder-${key}` : undefined,
 )
 
-const { floatingEl, floatingStyles, visible, show, hide } = useTooltip()
+const { floatingStyles, visible, activeText, show, hide } = useTooltip()
 </script>
 
 <template>
@@ -43,7 +43,7 @@ const { floatingEl, floatingStyles, visible, show, hide } = useTooltip()
     >
       <div
         class="vp-folder__title-text"
-        @mouseenter="tooltip && show($event)"
+        @mouseenter="tooltip && show($event, tooltip)"
         @mouseleave="hide"
       >
         {{ title }}
@@ -71,7 +71,7 @@ const { floatingEl, floatingStyles, visible, show, hide } = useTooltip()
         class="vp-tooltip"
         :style="floatingStyles"
       >
-        {{ tooltip }}
+        {{ activeText }}
       </div>
     </Teleport>
   </div>

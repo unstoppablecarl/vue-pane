@@ -1,10 +1,11 @@
-import { ref } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 import { flip, offset, shift, useFloating } from '@floating-ui/vue'
 
 export function useTooltip() {
   const referenceEl = ref<HTMLElement | null>(null)
-  const floatingEl = ref<HTMLElement | null>(null)
+  const floatingEl = useTemplateRef<HTMLElement>('floatingEl')
   const visible = ref(false)
+  const activeText = ref<string | undefined>(undefined)
 
   const { floatingStyles } = useFloating(referenceEl, floatingEl, {
     placement: 'top-start',
@@ -12,8 +13,9 @@ export function useTooltip() {
     middleware: [offset(4), flip(), shift({ padding: 8 })],
   })
 
-  function show(e: MouseEvent) {
+  function show(e: MouseEvent, text: string) {
     referenceEl.value = e.currentTarget as HTMLElement
+    activeText.value = text
     visible.value = true
   }
 
@@ -21,5 +23,5 @@ export function useTooltip() {
     visible.value = false
   }
 
-  return { floatingEl, floatingStyles, visible, show, hide }
+  return { floatingStyles, visible, activeText, show, hide }
 }

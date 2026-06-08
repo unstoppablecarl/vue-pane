@@ -1,0 +1,160 @@
+// ─── Hero ────────────────────────────────────────────────────────────────────
+
+.hero {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 48px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+    padding: 32px 0 24px;
+  }
+}
+
+.hero__title {
+  font-size: 2.4rem;
+  font-weight: 500;
+  color: var(--heading);
+  margin: 0 0 12px;
+  letter-spacing: 0.01em;
+}
+
+.hero__text p {
+  font-size: 1rem;
+  color: var(--fg-2);
+  margin: 0;
+  max-width: 420px;
+  line-height: 1.6;
+}
+
+.hero__demo {
+  flex-shrink: 0;
+}
+
+// ─── Media wrapper ────────────────────────────────────────────────────────────
+
+.media {
+  margin: 16px 0 24px;
+}
+
+// ─── Standalone code block ────────────────────────────────────────────────────
+
+.code-block {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+// ─── Demo block ───────────────────────────────────────────────────────────────
+
+.demo {
+  display: flex;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+  }
+}
+
+.demo__code {
+  flex: 3;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.demo__result {
+  flex: 2;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 16px;
+  background: var(--demo-bg);
+  border-left: 1px solid var(--border);
+  background-image:
+    radial-gradient(var(--demo-dot) 1px, transparent 0),
+    radial-gradient(var(--demo-dot) 1px, transparent 0);
+  background-size: 32px 32px, 8px 8px;
+  background-position: center;
+
+  @media (max-width: 900px) {
+    border-left: none;
+    border-top: 1px solid var(--border);
+  }
+}
+
+// ─── Syntax highlighting (shiki) ─────────────────────────────────────────────
+
+.hl .shiki {
+  font-family: 'Source Code Pro', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  margin: 0;
+  overflow-x: auto;
+  padding: 16px 20px;
+  width: 100%;
+  box-sizing: border-box;
+
+  code {
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    font-size: inherit;
+  }
+}
+
+.demo__code .hl .shiki {
+  font-size: 0.79rem;
+  padding: 18px 20px;
+}
+
+// ─── Related links ────────────────────────────────────────────────────────────
+
+.rel {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+.rel__item {
+  flex: 1;
+  min-width: 200px;
+}
+
+.rel__anchor {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-decoration: none;
+  background: var(--bg-2);
+  transition: background 0.12s, border-color 0.12s;
+
+  &:hover {
+    background: var(--bg);
+    border-color: var(--accent);
+  }
+}
+
+.rel__title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--heading);
+}
+
+.rel__detail {
+  font-size: 0.8rem;
+  color: var(--fg-2);
+  margin-top: 2px;
+}
+
+.rel__arrow {
+  font-size: 1.2rem;
+  color: var(--accent);
+}

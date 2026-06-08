@@ -11,7 +11,7 @@ const {
   tooltips?: string[]
 }>()
 
-const { floatingEl, floatingStyles, visible, show, hide } = useTooltip()
+const { floatingStyles, visible, activeText, show, hide } = useTooltip()
 const config = usePaneConfig()
 
 function setTab(i: number) {
@@ -36,26 +36,23 @@ function setTab(i: number) {
             <component
               :is="config.tooltipIcon"
               v-if="tooltips?.[i] && config.tooltipIcon"
-              @mouseenter="tooltips?.[i] && show($event)"
+              @mouseenter="tooltips?.[i] && show($event, tooltips[i])"
               @mouseleave="hide"
             />
           </span>
         </button>
-        <Teleport
-          v-if="tooltips?.[i]"
-          to="body"
-        >
-          <div
-            v-if="visible"
-            ref="floatingEl"
-            class="vp-tooltip"
-            :style="floatingStyles"
-          >
-            {{ tooltips?.[i] }}
-          </div>
-        </Teleport>
       </div>
     </div>
+    <Teleport to="body">
+      <div
+        v-if="visible"
+        ref="floatingEl"
+        class="vp-tooltip"
+        :style="floatingStyles"
+      >
+        {{ activeText }}
+      </div>
+    </Teleport>
     <div class="vp-tab__indent" />
     <div class="vp-tab__content">
       <div

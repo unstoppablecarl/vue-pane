@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import PLabel from './PLabel.vue'
 
 const model = defineModel<number>({ required: true })
@@ -20,6 +20,7 @@ const {
 const isDragging = ref(false)
 const isFocused = ref(false)
 const localValue = ref(String(model.value))
+const dragPixelDelta = ref(0)
 
 watch(model, (val) => {
   if (!isFocused.value) {
@@ -32,6 +33,28 @@ function clamp(val: number): number {
   if (max !== undefined) val = Math.min(max, val)
   return val
 }
+
+function snapToStep(val: number): number {
+  return Math.round(val / step) * step
+}
+
+const guideBodyPath = computed(() => {
+  const x = dragPixelDelta.value
+  return `M 0,4 L${x},4`
+})
+
+const guideHeadPath = computed(() => {
+  const x = dragPixelDelta.value
+  if (x === 0) return ''
+  const aox = x + (x > 0 ? -1 : 1)
+  const adx = Math.max(-4, Math.min(4, -aox))
+  return `M ${aox + adx},0 L${aox},4 L${aox + adx},8 M ${x},-1 L${x},9`
+})
+
+const tooltipText = computed(() => {
+  const decimals = step < 1 ? (String(step).split('.')[1]?.length ?? 0) : 0
+  return model.value.toFixed(decimals)
+})
 
 function onFocus() {
   isFocused.value = true
@@ -61,27 +84,33 @@ function onKeydown(e: KeyboardEvent) {
   }
 }
 
-let dragStartY = 0
+let dragStartX = 0
 let dragStartValue = 0
 
 function onKnobPointerDown(e: PointerEvent) {
   e.preventDefault()
   ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
   isDragging.value = true
-  dragStartY = e.clientY
+  dragStartX = e.clientX
   dragStartValue = model.value
+  dragPixelDelta.value = 0
+  document.body.style.cursor = 'ew-resize'
 }
 
 function onKnobPointerMove(e: PointerEvent) {
   if (!isDragging.value) return
-  const delta = dragStartY - e.clientY
-  model.value = clamp(dragStartValue + delta * step)
+  const delta = e.clientX - dragStartX
+  dragPixelDelta.value = delta
+  model.value = clamp(snapToStep(dragStartValue + delta))
 }
 
 function onKnobPointerUp() {
   isDragging.value = false
+  dragPixelDelta.value = 0
+  document.body.style.cursor = ''
 }
 </script>
+
 <template>
   <PLabel
     :label="label"
@@ -105,10 +134,28 @@ function onKnobPointerUp() {
         @pointermove="onKnobPointerMove"
         @pointerup="onKnobPointerUp"
         @pointercancel="onKnobPointerUp"
-      />
+      >
+        <svg class="vp-text__guide">
+          <path
+            class="vp-text__guide-body"
+            :d="guideBodyPath"
+          />
+          <path
+            class="vp-text__guide-head"
+            :d="guideHeadPath"
+          />
+        </svg>
+        <div
+          class="vp-text__drag-tooltip"
+          :style="{ left: `${dragPixelDelta}px` }"
+        >
+          {{ tooltipText }}
+        </div>
+      </div>
     </div>
   </PLabel>
 </template>
+
 <style lang="scss">
 @use '../styles/view/text';
 @use '../styles/view/number';

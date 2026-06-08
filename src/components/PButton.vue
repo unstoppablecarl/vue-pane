@@ -14,7 +14,7 @@ const emit = defineEmits<{
   click: []
 }>()
 
-const { floatingEl, floatingStyles, visible, show, hide } = useTooltip()
+const { floatingStyles, visible, activeText, show, hide } = useTooltip()
 const config = usePaneConfig()
 </script>
 <template>
@@ -28,7 +28,7 @@ const config = usePaneConfig()
         <component
           :is="config.tooltipIcon"
           v-if="tooltip && config.tooltipIcon"
-          @mouseenter="tooltip && show($event)"
+          @mouseenter="tooltip && show($event, tooltip)"
           @mouseleave="hide"
         />
       </span>
@@ -43,7 +43,7 @@ const config = usePaneConfig()
         class="vp-tooltip"
         :style="floatingStyles"
       >
-        {{ tooltip }}
+        {{ activeText }}
       </div>
     </Teleport>
   </div>
