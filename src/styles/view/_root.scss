@@ -4,9 +4,9 @@
 	@extend %vp-theming;
 }
 
-.vp-pane {
-	@extend %vp-theming;
-
+// Resets for form elements inside any vp container, including teleported
+// overlays. :where() zeroes the container's specificity
+:where(.vp-pane, .vp-color__popup) {
 	button, input, select, textarea {
 		appearance: none;
 		background-color: transparent;
@@ -18,6 +18,10 @@
 		outline: none;
 		padding: 0;
 	}
+}
+
+.vp-pane {
+	@extend %vp-theming;
 
 	background-color: vp.cssVar('base-bg');
 	border-radius: vp.cssVar('base-border-radius');
