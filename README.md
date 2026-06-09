@@ -2,6 +2,8 @@
 
 Compact debug panel components for Vue 3. A spiritual replacement for [Tweakpane](https://tweakpane.github.io/docs/) — same visual style, Vue-native API.
 
+**[Documentation](https://unstoppablecarl.github.io/vue-pane/)**
+
 ## Features
 
 - Inputs: text, number (drag-to-change), slider, checkbox, select, color picker, 2D point
