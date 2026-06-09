@@ -9,12 +9,14 @@ const {
   min = 0,
   max = 1,
   step = null,
+  readonly = false,
 } = defineProps<{
   label?: string
   tooltip?: string
   min?: number
   max?: number
   step?: number | null
+  readonly?: boolean
 }>()
 
 const trackRef = ref<HTMLElement | null>(null)
@@ -41,6 +43,7 @@ function valueFromPointer(e: PointerEvent): number {
 }
 
 function onTrackPointerDown(e: PointerEvent) {
+  if (readonly) return
   e.preventDefault()
   ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
   isDragging.value = true
@@ -48,7 +51,7 @@ function onTrackPointerDown(e: PointerEvent) {
 }
 
 function onTrackPointerMove(e: PointerEvent) {
-  if (!isDragging.value) return
+  if (readonly || !isDragging.value) return
   model.value = valueFromPointer(e)
 }
 
@@ -57,6 +60,7 @@ function onPointerUp() {
 }
 
 function onKeydown(e: KeyboardEvent) {
+  if (readonly) return
   const increment = step ?? (max - min) / 100
   if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
     e.preventDefault()
@@ -72,7 +76,10 @@ function onKeydown(e: KeyboardEvent) {
     :label="label"
     :tooltip="tooltip"
   >
-    <div class="vp-slider">
+    <div
+      class="vp-slider"
+      :class="{ 'vp-slider--readonly': readonly }"
+    >
       <div
         ref="trackRef"
         class="vp-slider__track"

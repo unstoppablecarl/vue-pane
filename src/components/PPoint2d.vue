@@ -9,11 +9,13 @@ const {
   tooltip,
   min = -1,
   max = 1,
+  readonly = false,
 } = defineProps<{
   label?: string
   tooltip?: string
   min?: number
   max?: number
+  readonly?: boolean
 }>()
 
 const isOpen = ref(false)
@@ -31,16 +33,19 @@ function clamp(val: number): number {
 }
 
 function onXBlur(e: Event) {
+  if (readonly) return
   const val = parseFloat((e.target as HTMLInputElement).value)
   if (!isNaN(val)) model.value = { x: clamp(val), y: model.value.y }
 }
 
 function onYBlur(e: Event) {
+  if (readonly) return
   const val = parseFloat((e.target as HTMLInputElement).value)
   if (!isNaN(val)) model.value = { x: model.value.x, y: clamp(val) }
 }
 
 function toggle() {
+  if (readonly) return
   isOpen.value = !isOpen.value
 }
 
@@ -91,6 +96,7 @@ function posToValue(e: PointerEvent) {
 }
 
 function onCanvasDown(e: PointerEvent) {
+  if (readonly) return
   e.preventDefault()
   ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
   canvasDragging = true
@@ -98,7 +104,7 @@ function onCanvasDown(e: PointerEvent) {
 }
 
 function onCanvasMove(e: PointerEvent) {
-  if (!canvasDragging) return
+  if (readonly || !canvasDragging) return
   model.value = posToValue(e)
 }
 
@@ -113,7 +119,7 @@ function onCanvasUp() {
   >
     <div
       class="vp-point-2d"
-      :class="{ 'vp-point-2d--expanded': isOpen, 'vp-point-2d--complete': isComplete }"
+      :class="{ 'vp-point-2d--expanded': isOpen, 'vp-point-2d--complete': isComplete, 'vp-point-2d--readonly': readonly }"
     >
       <div class="vp-point-2d__header">
         <button
@@ -133,24 +139,28 @@ function onCanvasUp() {
           <div style="display:flex; gap:2px">
             <div
               class="vp-text vp-text--number vp-text--first"
+              :class="{ 'vp-text--readonly': readonly }"
               style="flex:1"
             >
               <input
                 class="vp-text__input"
                 type="text"
                 :value="localX"
+                :readonly="readonly"
                 @blur="onXBlur"
                 @keydown.enter="(e) => (e.target as HTMLElement).blur()"
               >
             </div>
             <div
               class="vp-text vp-text--number vp-text--last"
+              :class="{ 'vp-text--readonly': readonly }"
               style="flex:1"
             >
               <input
                 class="vp-text__input"
                 type="text"
                 :value="localY"
+                :readonly="readonly"
                 @blur="onYBlur"
                 @keydown.enter="(e) => (e.target as HTMLElement).blur()"
               >

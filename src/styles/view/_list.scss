@@ -14,4 +14,11 @@
 
 		color: vp.cssVar('button-fg');
 	}
+	&--readonly &__input {
+		opacity: 0.5;
+		pointer-events: none;
+	}
+	&--readonly &__arrow {
+		opacity: 0.5;
+	}
 }

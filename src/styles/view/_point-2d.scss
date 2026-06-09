@@ -58,4 +58,13 @@
 	}
 	&__crosshair-h { height: 1px; left: 0; right: 0; }
 	&__crosshair-v { bottom: 0; top: 0; width: 1px; }
+	&--readonly &__btn {
+		opacity: 0.5;
+		pointer-events: none;
+	}
+	&--readonly &__canvas {
+		cursor: default;
+		pointer-events: none;
+		opacity: 0.5;
+	}
 }

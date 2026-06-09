@@ -51,4 +51,10 @@
 	&.#{vp.$disabled} &__box {
 		opacity: 0.5;
 	}
+	&--readonly &__label {
+		pointer-events: none;
+	}
+	&--readonly &__box {
+		opacity: 0.5;
+	}
 }

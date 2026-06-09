@@ -9,12 +9,14 @@ const {
   min,
   max,
   step = 1,
+  readonly = false,
 } = defineProps<{
   label?: string
   tooltip?: string
   min?: number
   max?: number
   step?: number
+  readonly?: boolean
 }>()
 
 const isDragging = ref(false)
@@ -118,17 +120,19 @@ function onKnobPointerUp() {
   >
     <div
       class="vp-text vp-text--number"
-      :class="{ 'vp-text--dragging': isDragging }"
+      :class="{ 'vp-text--dragging': isDragging, 'vp-text--readonly': readonly }"
     >
       <input
         v-model="localValue"
         class="vp-text__input"
         type="text"
+        :readonly="readonly"
         @focus="onFocus"
         @blur="onBlur"
         @keydown="onKeydown"
       >
       <div
+        v-if="!readonly"
         class="vp-text__knob"
         @pointerdown="onKnobPointerDown"
         @pointermove="onKnobPointerMove"

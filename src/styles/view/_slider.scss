@@ -29,4 +29,9 @@
 	&__track:hover &__knob::after { background-color: vp.cssVar('button-bg-hover'); }
 	&__track:focus &__knob::after { background-color: vp.cssVar('button-bg-focus'); }
 	&__track:active &__knob::after { background-color: vp.cssVar('button-bg-active'); }
+	&--readonly &__track {
+		cursor: default;
+		opacity: 0.5;
+		pointer-events: none;
+	}
 }

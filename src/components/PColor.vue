@@ -10,10 +10,12 @@ const {
   label,
   tooltip,
   alpha = false,
+  readonly = false,
 } = defineProps<{
   label?: string
   tooltip?: string
   alpha?: boolean
+  readonly?: boolean
 }>()
 
 const isOpen = ref(false)
@@ -27,10 +29,12 @@ const { floatingStyles } = useFloating(swatchRef, pickerRef, {
 })
 
 function toggle() {
+  if (readonly) return
   isOpen.value = !isOpen.value
 }
 
 function onPickerChange(color: unknown) {
+  if (readonly) return
   const tc = tinycolor(color as Parameters<typeof tinycolor>[0])
   if (tc.isValid()) {
     model.value = alpha ? tc.toHex8String() : tc.toHexString()
@@ -38,6 +42,7 @@ function onPickerChange(color: unknown) {
 }
 
 function onHexChange(e: Event) {
+  if (readonly) return
   const val = (e.target as HTMLInputElement).value
   const tc = tinycolor(val)
   if (tc.isValid()) {
@@ -60,7 +65,10 @@ onUnmounted(() => document.removeEventListener('pointerdown', onPointerDown))
     :label="label"
     :tooltip="tooltip"
   >
-    <div class="vp-color">
+    <div
+      class="vp-color"
+      :class="{ 'vp-color--readonly': readonly }"
+    >
       <div class="vp-color__header">
         <div
           ref="swatchRef"
@@ -81,6 +89,7 @@ onUnmounted(() => document.removeEventListener('pointerdown', onPointerDown))
             class="vp-text__input"
             type="text"
             :value="model"
+            :readonly="readonly"
             @change="onHexChange"
           >
         </div>

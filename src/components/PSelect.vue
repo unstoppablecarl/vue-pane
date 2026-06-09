@@ -6,22 +6,31 @@ const {
   label,
   tooltip,
   options,
+  readonly = false,
 } = defineProps<{
   label?: string
   tooltip?: string
   options: { value: string | number, label: string }[]
+  readonly?: boolean
 }>()
+
+function onChange(e: Event) {
+  if (!readonly) model.value = (e.target as HTMLSelectElement).value
+}
 </script>
 <template>
   <PLabel
     :label="label"
     :tooltip="tooltip"
   >
-    <div class="vp-select">
+    <div
+      class="vp-select"
+      :class="{ 'vp-select--readonly': readonly }"
+    >
       <select
         class="vp-select__input"
         :value="model"
-        @change="model = ($event.target as HTMLSelectElement).value"
+        @change="onChange"
       >
         <option
           v-for="opt in options"
