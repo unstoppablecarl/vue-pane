@@ -1,5 +1,4 @@
-import type { Ref } from 'vue'
-import { nextTick, onMounted, ref, watch } from 'vue'
+import { computed, inject, type InjectionKey, nextTick, onMounted, provide, type Ref, ref, watch } from 'vue'
 import { usePaneConfig } from './usePaneConfig.ts'
 
 function measureExpandedHeight(el: HTMLElement, expandedClass: string): number {
@@ -125,4 +124,16 @@ export function useFoldable(
   }
 
   return { isExpanded, toggle }
+}
+
+export const EXPANDED_KEY: InjectionKey<Ref<boolean>> = Symbol('vp-expanded')
+
+export function getPaneExpanded(): Ref<boolean> {
+  return inject(EXPANDED_KEY, ref(true))
+}
+
+export function cascadeExpanded(isExpanded: Ref<boolean>) {
+  const parentExpanded = inject(EXPANDED_KEY, ref(true))
+  const effectiveExpanded = computed(() => parentExpanded.value && isExpanded.value)
+  provide(EXPANDED_KEY, effectiveExpanded)
 }

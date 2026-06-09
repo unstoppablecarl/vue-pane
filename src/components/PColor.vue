@@ -3,20 +3,26 @@ import { flip, offset, shift, useFloating } from '@floating-ui/vue'
 import { onMounted, onUnmounted, ref } from 'vue'
 import { ChromePicker, tinycolor } from 'vue-color'
 import 'vue-color/style.css'
+import { type PollingRef } from '../composables/pollingRef'
+import { usePollingOrModel } from '../composables/usePolling'
 import PLabel from './PLabel.vue'
 
-const model = defineModel<string>({ required: true })
+const modelValue = defineModel<string>()
 const {
+  poll,
   label,
   tooltip,
   alpha = false,
   readonly = false,
 } = defineProps<{
+  poll?: PollingRef<string>
   label?: string
   tooltip?: string
   alpha?: boolean
   readonly?: boolean
 }>()
+
+const model = usePollingOrModel(poll, modelValue)
 
 const isOpen = ref(false)
 const swatchRef = ref<HTMLElement | null>(null)

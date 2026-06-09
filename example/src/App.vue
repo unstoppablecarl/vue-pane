@@ -8,7 +8,7 @@ import {
   PFolder,
   PGraph,
   PMonitor,
-  PMonitorMulti,
+  PMonitorMultiline,
   PNumber,
   PPoint2d,
   PSelect,
@@ -37,8 +37,13 @@ const activeTab = ref(0)
 
 <template>
   <div class="container">
-    <VPane title="Debug" style="width: 300px;">
-      <div class="vp-tooltip">testing</div>
+    <VPane
+      title="Debug"
+      style="width: 300px;"
+    >
+      <div class="vp-tooltip">
+        testing
+      </div>
       <PText
         v-model="name"
         label="Name"
@@ -81,7 +86,7 @@ const activeTab = ref(0)
         label="Output"
         tooltip="Live computed output value"
       />
-      <PMonitorMulti
+      <PMonitorMultiline
         :value="`Name: ${name}\nCount: ${count}\nSpeed: ${speed}`"
         label="Multi"
         tooltip="All current values as a formatted summary"
@@ -92,19 +97,42 @@ const activeTab = ref(0)
         name="transform"
         tooltip="Position and rotation controls"
       >
-        <PNumber v-model="count" label="X" tooltip="Horizontal offset in units" />
-        <PNumber v-model="count" label="Y" tooltip="Vertical offset in units" />
-        <PFolder title="Nested" name="nested" tooltip="Additional nested controls">
-          <PText v-model="name" label="Label" tooltip="Custom label text" />
+        <PNumber
+          v-model="count"
+          label="X"
+          tooltip="Horizontal offset in units"
+        />
+        <PNumber
+          v-model="count"
+          label="Y"
+          tooltip="Vertical offset in units"
+        />
+        <PFolder
+          title="Nested"
+          name="nested"
+          tooltip="Additional nested controls"
+        >
+          <PText
+            v-model="name"
+            label="Label"
+            tooltip="Custom label text"
+          />
         </PFolder>
       </PFolder>
     </VPane>
 
     <VPane style="width: 300px;">
-      <PText v-model="name" label="No-title pane" tooltip="This pane has no collapsible title" />
+      <PText
+        v-model="name"
+        label="No-title pane"
+        tooltip="This pane has no collapsible title"
+      />
     </VPane>
 
-    <VPane title="Slider & Color" style="width: 300px;">
+    <VPane
+      title="Slider & Color"
+      style="width: 300px;"
+    >
       <PSlider
         v-model="sliderVal"
         label="Slider"
@@ -120,7 +148,10 @@ const activeTab = ref(0)
       />
     </VPane>
 
-    <VPane title="Point 2D & Graph" style="width: 300px;">
+    <VPane
+      title="Point 2D & Graph"
+      style="width: 300px;"
+    >
       <PPoint2d
         v-model="point"
         label="Point"
@@ -135,29 +166,58 @@ const activeTab = ref(0)
       />
     </VPane>
 
-    <VPane title="Tabs" style="width: 300px;">
+    <VPane
+      title="Tabs"
+      style="width: 300px;"
+    >
       <PTab
         v-model="activeTab"
         :tabs="['Settings', 'Info']"
         :tooltips="['Configure parameters', 'View current state']"
       >
         <template #Settings>
-          <PNumber v-model="count" label="Count" :min="0" :max="100" />
-          <PCheckbox v-model="enabled" label="Enabled" />
+          <PNumber
+            v-model="count"
+            label="Count"
+            :min="0"
+            :max="100"
+          />
+          <PCheckbox
+            v-model="enabled"
+            label="Enabled"
+          />
         </template>
         <template #Info>
-          <PMonitor :value="name" label="Name" />
-          <PMonitor :value="count" label="Count" />
+          <PMonitor
+            :value="name"
+            label="Name"
+          />
+          <PMonitor
+            :value="count"
+            label="Count"
+          />
         </template>
       </PTab>
     </VPane>
 
-    <VPane title="Disabled & Hidden" style="width: 300px;">
-      <PFolder title="Disabled Folder" :disabled="true">
-        <PText v-model="name" label="Name" />
+    <VPane
+      title="Disabled & Hidden"
+      style="width: 300px;"
+    >
+      <PFolder
+        title="Disabled Folder"
+        :disabled="true"
+      >
+        <PText
+          v-model="name"
+          label="Name"
+        />
       </PFolder>
       <PFolder title="Normal Folder">
-        <PText v-model="name" label="Name" />
+        <PText
+          v-model="name"
+          label="Name"
+        />
       </PFolder>
     </VPane>
   </div>

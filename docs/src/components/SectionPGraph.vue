@@ -45,7 +45,9 @@ setInterval(() => {
     <table>
       <thead><tr><th>Prop</th><th>Type</th><th>Description</th></tr></thead>
       <tbody>
-        <tr><td><code>values</code></td><td>number[]</td><td>Array of data points to plot (required).</td></tr>
+        <tr><td><code>:values</code></td><td>number[]</td><td>Array of data points to plot.</td></tr>
+        <tr><td><code>:poll</code></td><td>PollingRef&lt;number&gt;</td><td>Alternative to <code>:values</code> — polls a single value and accumulates a rolling history internally. See <a href="#polling">Polling</a>.</td></tr>
+        <tr><td><code>:history-length</code></td><td>number</td><td>Number of samples to keep when using <code>:poll</code> (default: <code>100</code>).</td></tr>
         <tr><td><code>min</code></td><td>number</td><td>Fixed y-axis minimum. Auto-computed from data if omitted.</td></tr>
         <tr><td><code>max</code></td><td>number</td><td>Fixed y-axis maximum. Auto-computed from data if omitted.</td></tr>
         <tr><td><code>label</code></td><td>string</td><td>Row label.</td></tr>

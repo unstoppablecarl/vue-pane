@@ -7,9 +7,10 @@ Compact debug panel components for Vue 3. A spiritual replacement for [Tweakpane
 ## Features
 
 - Inputs: text, number (drag-to-change), slider, checkbox, select, color picker, 2D point
-- Display: single-line monitor, multi-line monitor, graph/sparkline
+- Display: single-line monitor, multiline monitor, graph/sparkline
 - Layout: collapsible pane, collapsible folders, tabs, separator
 - Pane and folder state persisted to `localStorage` via the `id` prop
+- Polling: `pollingRef` reads plain (non-reactive) JS objects on an interval — pauses automatically when the pane is collapsed
 
 ## Installation
 
@@ -39,7 +40,7 @@ export default defineConfig({
 ```vue
 <script setup>
 import { ref } from 'vue'
-import { VPane, PNumber, PCheckbox, PMonitor } from 'vue-pane'
+import { VPane, PNumber, PCheckbox, PMonitor, pollingRef } from 'vue-pane'
 
 const speed = ref(1)
 const enabled = ref(true)

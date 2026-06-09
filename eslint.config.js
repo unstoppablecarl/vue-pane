@@ -5,7 +5,7 @@ import stylistic from '@stylistic/eslint-plugin'
 import globals from 'globals'
 
 export default tseslint.config(
-  { ignores: ['dist', 'example'] },
+  { ignores: ['dist', 'example/dist', 'docs/dist'] },
 
   eslint.configs.recommended,
   tseslint.configs.recommended,
@@ -36,7 +36,13 @@ export default tseslint.config(
   }),
 
   {
+    files: ['docs/src/components/CodeBlock.vue'],
+    rules: { 'vue/no-v-html': 'off' },
+  },
+
+  {
     rules: {
+      'no-useless-escape': 'off',
       'vue/multi-word-component-names': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       // Optional props without defaults are fine when TypeScript types them

@@ -51,6 +51,7 @@ const codePMonitor = `<!-- :value is reactive, not v-model — display only -->
       <thead><tr><th>Prop</th><th>Type</th><th>Description</th></tr></thead>
       <tbody>
         <tr><td><code>:value</code></td><td>unknown</td><td>Reactive value to display. Not a <code>v-model</code>.</td></tr>
+        <tr><td><code>:poll</code></td><td>PollingRef&lt;unknown&gt;</td><td>Alternative to <code>:value</code> for polling a plain object property. See <a href="#polling">Polling</a>.</td></tr>
         <tr><td><code>label</code></td><td>string</td><td>Row label.</td></tr>
         <tr><td><code>tooltip</code></td><td>string</td><td>Tooltip on hover.</td></tr>
       </tbody>

@@ -1,16 +1,22 @@
 <script setup lang="ts">
+import { type PollingRef } from '../composables/pollingRef'
+import { usePollingOrModel } from '../composables/usePolling'
 import PLabel from './PLabel.vue'
 
-const model = defineModel<boolean>({ required: true })
+const modelValue = defineModel<boolean>()
 const {
+  poll,
   label,
   tooltip,
   readonly = false,
 } = defineProps<{
+  poll?: PollingRef<boolean>
   label?: string
   tooltip?: string
   readonly?: boolean
 }>()
+
+const model = usePollingOrModel(poll, modelValue)
 
 function onChange(e: Event) {
   if (!readonly) model.value = (e.target as HTMLInputElement).checked

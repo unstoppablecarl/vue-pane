@@ -1,18 +1,24 @@
 <script setup lang="ts">
+import { type PollingRef } from '../composables/pollingRef'
+import { usePollingOrModel } from '../composables/usePolling'
 import PLabel from './PLabel.vue'
 
-const model = defineModel<string | number>({ required: true })
+const modelValue = defineModel<string | number>()
 const {
+  poll,
   label,
   tooltip,
   options,
   readonly = false,
 } = defineProps<{
+  poll?: PollingRef<string | number>
   label?: string
   tooltip?: string
   options: { value: string | number, label: string }[]
   readonly?: boolean
 }>()
+
+const model = usePollingOrModel(poll, modelValue)
 
 function onChange(e: Event) {
   if (!readonly) model.value = (e.target as HTMLSelectElement).value

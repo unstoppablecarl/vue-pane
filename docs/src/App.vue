@@ -14,7 +14,8 @@ import SectionPSeparator from './components/SectionPSeparator.vue'
 import SectionPCheckbox from './components/SectionPCheckbox.vue'
 import SectionPSelect from './components/SectionPSelect.vue'
 import SectionPMonitor from './components/SectionPMonitor.vue'
-import SectionPMonitorMulti from './components/SectionPMonitorMulti.vue'
+import SectionPMonitorMultiline from './components/SectionPMonitorMultiline.vue'
+import SectionPolling from './components/SectionPolling.vue'
 import SectionPGraph from './components/SectionPGraph.vue'
 import SectionPColor from './components/SectionPColor.vue'
 import SectionPPoint2d from './components/SectionPPoint2d.vue'
@@ -50,7 +51,7 @@ const navGroups: NavGroup[] = [
     label: 'Monitors',
     items: [
       { label: 'PMonitor', id: 'pmonitor' },
-      { label: 'PMonitorMulti', id: 'pmonitor-multi' },
+      { label: 'PMonitorMultiline', id: 'pmonitor-multiline' },
       { label: 'PGraph', id: 'pgraph' },
     ],
   },
@@ -65,6 +66,14 @@ const navGroups: NavGroup[] = [
     label: 'Containers',
     items: [
       { label: 'PTab', id: 'ptab' },
+    ],
+  },
+  {
+    label: 'Polling',
+    id: 'polling',
+    items: [
+      { label: 'pollingRef', id: 'polling-pollingref' },
+      { label: 'usePolling', id: 'polling-usepolling' },
     ],
   },
   {
@@ -131,11 +140,12 @@ onUnmounted(() => clearInterval(timer))
         <SectionPCheckbox />
         <SectionPSelect />
         <SectionPMonitor :monitor-val="monitorVal" />
-        <SectionPMonitorMulti :monitor-val="monitorVal" />
+        <SectionPMonitorMultiline :monitor-val="monitorVal" />
         <SectionPGraph :graph-values="graphValues" />
         <SectionPColor />
         <SectionPPoint2d />
         <SectionPTab />
+        <SectionPolling />
         <SectionTheming />
       </main>
     </div>

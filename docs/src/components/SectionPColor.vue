@@ -49,6 +49,7 @@ const color = ref('#ff5500')
       <thead><tr><th>Prop</th><th>Type</th><th>Description</th></tr></thead>
       <tbody>
         <tr><td><code>v-model</code></td><td>string</td><td>Hex color string, e.g. <code>#ff5500</code> or <code>#ff5500ff</code>.</td></tr>
+        <tr><td><code>:poll</code></td><td>PollingRef&lt;string&gt;</td><td>Alternative to <code>v-model</code> for polling a plain object property. See <a href="#polling">Polling</a>.</td></tr>
         <tr><td><code>alpha</code></td><td>boolean</td><td>Show the alpha channel control in the picker.</td></tr>
         <tr><td><code>label</code></td><td>string</td><td>Row label.</td></tr>
         <tr><td><code>tooltip</code></td><td>string</td><td>Tooltip on hover.</td></tr>

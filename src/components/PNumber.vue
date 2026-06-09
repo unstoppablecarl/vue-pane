@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import { type PollingRef } from '../composables/pollingRef'
+import { usePollingOrModel } from '../composables/usePolling'
 import PLabel from './PLabel.vue'
 
-const model = defineModel<number>({ required: true })
+const modelValue = defineModel<number>()
 const {
+  poll,
   label,
   tooltip,
   min,
@@ -11,6 +14,7 @@ const {
   step = 1,
   readonly = false,
 } = defineProps<{
+  poll?: PollingRef<number>
   label?: string
   tooltip?: string
   min?: number
@@ -18,6 +22,8 @@ const {
   step?: number
   readonly?: boolean
 }>()
+
+const model = usePollingOrModel(poll, modelValue)
 
 const isDragging = ref(false)
 const isFocused = ref(false)

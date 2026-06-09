@@ -17,7 +17,7 @@ const {
 }>()
 
 if (poll !== undefined && value !== undefined) {
-  throw new Error('PMonitor: use either :poll or :value, not both.')
+  throw new Error('PMonitorMulti: use either :poll or :value, not both.')
 }
 
 if (poll) usePolling(poll)
@@ -29,13 +29,15 @@ const displayValue = computed(() => poll?.value ?? value)
     :label="label"
     :tooltip="tooltip"
   >
-    <div class="vp-monitor">
-      <div class="vp-monitor__value">
-        {{ displayValue }}
-      </div>
+    <div class="vp-monitor-multi">
+      <textarea
+        class="vp-monitor-multi__value"
+        readonly
+        :value="String(displayValue)"
+      />
     </div>
   </PLabel>
 </template>
 <style lang="scss">
-@use '../styles/view/log';
+@use '../styles/view/monitor-multi';
 </style>

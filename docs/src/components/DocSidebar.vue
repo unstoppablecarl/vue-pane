@@ -43,4 +43,3 @@ defineProps<{
     </div>
   </nav>
 </template>
-

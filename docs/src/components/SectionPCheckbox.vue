@@ -44,6 +44,7 @@ const codePCheckbox = `<VPane title="Debug">
       <thead><tr><th>Prop</th><th>Type</th><th>Description</th></tr></thead>
       <tbody>
         <tr><td><code>v-model</code></td><td>boolean</td><td>Bound boolean value.</td></tr>
+        <tr><td><code>:poll</code></td><td>PollingRef&lt;boolean&gt;</td><td>Alternative to <code>v-model</code> for polling a plain object property. See <a href="#polling">Polling</a>.</td></tr>
         <tr><td><code>label</code></td><td>string</td><td>Row label.</td></tr>
         <tr><td><code>tooltip</code></td><td>string</td><td>Tooltip on hover.</td></tr>
       </tbody>

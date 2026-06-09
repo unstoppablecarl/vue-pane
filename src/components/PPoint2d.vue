@@ -1,22 +1,28 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
+import { type PollingRef } from '../composables/pollingRef'
+import { usePollingOrModel } from '../composables/usePolling'
 import { usePickerFold } from '../composables/usePickerFold'
 import PLabel from './PLabel.vue'
 
-const model = defineModel<{ x: number, y: number }>({ required: true })
+const modelValue = defineModel<{ x: number, y: number }>()
 const {
+  poll,
   label,
   tooltip,
   min = -1,
   max = 1,
   readonly = false,
 } = defineProps<{
+  poll?: PollingRef<{ x: number, y: number }>
   label?: string
   tooltip?: string
   min?: number
   max?: number
   readonly?: boolean
 }>()
+
+const model = usePollingOrModel(poll, modelValue)
 
 const isOpen = ref(false)
 const panelRef = ref<HTMLElement | null>(null)

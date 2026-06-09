@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useFoldable } from '../composables/useFoldable'
+import { cascadeExpanded, useFoldable } from '../composables/useFoldable'
 import { usePaneConfig } from '../composables/usePaneConfig'
 import { useTooltip } from '../composables/useTooltip'
 
@@ -25,6 +25,8 @@ const { isExpanded, toggle } = useFoldable(
   expandedModel,
   key ? `vp-folder-${key}` : undefined,
 )
+
+cascadeExpanded(isExpanded)
 
 const { floatingStyles, visible, activeText, show, hide } = useTooltip()
 </script>

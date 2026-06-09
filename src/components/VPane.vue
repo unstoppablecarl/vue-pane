@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { useFoldable } from '../composables/useFoldable'
+import { cascadeExpanded, useFoldable } from '../composables/useFoldable'
 import { type PaneConfig, providePaneConfig } from '../composables/usePaneConfig'
 
 const expandedModel = defineModel<boolean>('expanded', { default: undefined })
@@ -29,6 +29,8 @@ const { isExpanded, toggle } = useFoldable(
   expandedModel,
   key ? `vp-pane-${key}` : undefined,
 )
+
+cascadeExpanded(isExpanded)
 </script>
 <template>
   <div
