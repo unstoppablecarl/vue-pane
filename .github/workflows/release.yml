@@ -7,7 +7,7 @@ on:
 jobs:
   release:
     # prevents this action from running on forks
-    if: github.repository == 'unstoppablecarl/pixel-data-js'
+    if: github.repository == 'unstoppablecarl/vue-pane'
     runs-on: ubuntu-latest
     permissions:
       contents: read
