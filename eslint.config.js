@@ -38,6 +38,7 @@ export default tseslint.config(
   {
     rules: {
       'vue/multi-word-component-names': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
       // Optional props without defaults are fine when TypeScript types them
       'vue/require-default-prop': 'off',
       // Compact math expressions are readable without forcing one statement per line
