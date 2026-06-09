@@ -1,60 +1,69 @@
 @use '../vp';
 
 .vp-checkbox {
-	&__label {
-		display: block;
-		position: relative;
-	}
-	&__input {
-		left: 0;
-		opacity: 0;
-		position: absolute;
-		top: 0;
-	}
-	&__box {
-		background-color: vp.cssVar('input-bg');
-		border-radius: vp.cssVar('blade-border-radius');
-		cursor: pointer;
-		display: block;
-		height: vp.cssVar('container-unit-size');
-		position: relative;
-		width: vp.cssVar('container-unit-size');
+  &__label {
+    display: block;
+    position: relative;
+  }
 
-		svg {
-			display: block;
-			height: 16px;
-			inset: 0;
-			margin: auto;
-			opacity: 0;
-			position: absolute;
-			width: 16px;
+  &__input {
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+  }
 
-			path {
-				fill: none;
-				stroke: vp.cssVar('input-fg');
-				stroke-width: 2;
-			}
-		}
-	}
-	&__input:hover + &__box {
-		background-color: vp.cssVar('input-bg-hover');
-	}
-	&__input:focus + &__box {
-		background-color: vp.cssVar('input-bg-focus');
-	}
-	&__input:active + &__box {
-		background-color: vp.cssVar('input-bg-active');
-	}
-	&__input:checked + &__box svg {
-		opacity: 1;
-	}
-	&.#{vp.$disabled} &__box {
-		opacity: 0.5;
-	}
-	&--readonly &__label {
-		pointer-events: none;
-	}
-	&--readonly &__box {
-		opacity: 0.5;
-	}
+  &__box {
+    background-color: vp.cssVar('input-bg');
+    border-radius: vp.cssVar('blade-border-radius');
+    cursor: pointer;
+    display: block;
+    height: vp.cssVar('container-unit-size');
+    position: relative;
+    width: vp.cssVar('container-unit-size');
+
+    svg {
+      display: block;
+      height: 16px;
+      inset: 0;
+      margin: auto;
+      opacity: 0;
+      position: absolute;
+      width: 16px;
+
+      path {
+        fill: none;
+        stroke: vp.cssVar('input-fg');
+        stroke-width: 2;
+      }
+    }
+  }
+
+  &__input:hover + &__box {
+    background-color: vp.cssVar('input-bg-hover');
+  }
+
+  &__input:focus + &__box {
+    background-color: vp.cssVar('input-bg-focus');
+  }
+
+  &__input:active + &__box {
+    background-color: vp.cssVar('input-bg-active');
+  }
+
+  &__input:checked + &__box svg {
+    opacity: 1;
+  }
+
+  &.#{vp.$disabled} &__box {
+    opacity: 0.5;
+  }
+
+  &--readonly &__label {
+    pointer-events: none;
+  }
+
+  &--readonly &__box {
+    opacity: 0.5;
+  }
 }

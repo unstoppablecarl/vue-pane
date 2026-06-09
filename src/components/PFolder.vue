@@ -43,7 +43,7 @@ const { floatingStyles, visible, activeText, show, hide } = useTooltip()
       class="vp-folder__title"
       @click="toggle"
     >
-      <div
+      <span
         class="vp-folder__title-text"
         @mouseenter="tooltip && show($event, tooltip)"
         @mouseleave="hide"
@@ -53,8 +53,8 @@ const { floatingStyles, visible, activeText, show, hide } = useTooltip()
           :is="config.tooltipIcon"
           v-if="tooltip && config.tooltipIcon"
         />
-      </div>
-      <div class="vp-folder__chevron" />
+      </span>
+      <span class="vp-folder__chevron" />
     </button>
     <div class="vp-folder__indent" />
     <div

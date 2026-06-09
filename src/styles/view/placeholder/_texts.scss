@@ -1,11 +1,11 @@
 %vp-texts {
-	display: flex;
+  display: flex;
 }
 
 %vp-texts_item {
-	width: 100%;
+  width: 100%;
 
-	& + & {
-		margin-left: 2px;
-	}
+  & + & {
+    margin-left: 2px;
+  }
 }

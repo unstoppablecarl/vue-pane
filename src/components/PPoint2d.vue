@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { type PollingRef } from '../composables/pollingRef'
-import { usePollingOrModel } from '../composables/usePolling'
 import { usePickerFold } from '../composables/usePickerFold'
+import { usePollingOrModel } from '../composables/usePolling'
 import PLabel from './PLabel.vue'
 
 const modelValue = defineModel<{ x: number, y: number }>()

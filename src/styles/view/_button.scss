@@ -1,12 +1,13 @@
 @use '../vp';
 
 .vp-button {
-	&__btn {
-		@extend %vp-button;
+  &__btn {
+    @extend %vp-button;
 
-		width: 100%;
-	}
-	&__label {
-		text-align: center;
-	}
+    width: 100%;
+  }
+
+  &__label {
+    text-align: center;
+  }
 }

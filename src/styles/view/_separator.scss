@@ -1,15 +1,16 @@
 @use '../vp';
 
 .vp-separator {
-	&__rule {
-		background-color: vp.cssVar('groove-fg');
-		border-width: 0;
-		display: block;
-		height: vp.$separator-width;
-		margin: 0;
-		width: 100%;
-	}
-	&.#{vp.$disabled} &__rule {
-		opacity: 0.5;
-	}
+  &__rule {
+    background-color: vp.cssVar('groove-fg');
+    border-width: 0;
+    display: block;
+    height: vp.$separator-width;
+    margin: 0;
+    width: 100%;
+  }
+
+  &.#{vp.$disabled} &__rule {
+    opacity: 0.5;
+  }
 }

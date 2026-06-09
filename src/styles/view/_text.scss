@@ -1,28 +1,32 @@
 @use '../vp';
 
 .vp-text {
-	position: relative;
+  position: relative;
 
-	&__input {
-		@extend %vp-input;
+  &__input {
+    @extend %vp-input;
 
-		padding-left: vp.cssVar('blade-h-padding');
-		padding-right: vp.cssVar('blade-h-padding');
-	}
-	&--readonly &__input {
-		cursor: default;
-		opacity: 0.5;
-	}
-	// Array position variants
-	&--first &__input {
-		border-bottom-right-radius: 0;
-		border-top-right-radius: 0;
-	}
-	&--middle &__input {
-		border-radius: 0;
-	}
-	&--last &__input {
-		border-bottom-left-radius: 0;
-		border-top-left-radius: 0;
-	}
+    padding-left: vp.cssVar('blade-h-padding');
+    padding-right: vp.cssVar('blade-h-padding');
+  }
+
+  &--readonly &__input {
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  // Array position variants
+  &--first &__input {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  &--middle &__input {
+    border-radius: 0;
+  }
+
+  &--last &__input {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+  }
 }

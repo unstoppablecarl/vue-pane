@@ -2,36 +2,79 @@
 @use '../vp';
 
 .vp-slider {
-	&.vp--disabled { opacity: 0.5; }
-	&__track {
-		box-sizing: border-box; cursor: pointer;
-		height: vp.cssVar('container-unit-size');
-		margin: 0 math.div(vp.$slider-knob-size, 2);
-		outline: none; position: relative;
-		&::before {
-			background-color: vp.cssVar('input-bg'); border-radius: 1px;
-			content: ''; display: block; height: 2px; inset: 0; margin: auto; position: absolute;
-		}
-	}
-	&__knob {
-		height: 100%; left: 0; position: absolute; top: 0;
-		&::before {
-			background-color: vp.cssVar('input-fg'); border-radius: 1px;
-			content: ''; display: block; height: 2px; inset: 0; margin-bottom: auto; margin-top: auto; position: absolute;
-		}
-		&::after {
-			background-color: vp.cssVar('button-bg'); border-radius: vp.cssVar('blade-border-radius');
-			bottom: 0; content: ''; display: block; height: vp.$slider-knob-size;
-			margin-bottom: auto; margin-top: auto; position: absolute;
-			right: math.div(-1 * vp.$slider-knob-size, 2); top: 0; width: vp.$slider-knob-size;
-		}
-	}
-	&__track:hover &__knob::after { background-color: vp.cssVar('button-bg-hover'); }
-	&__track:focus &__knob::after { background-color: vp.cssVar('button-bg-focus'); }
-	&__track:active &__knob::after { background-color: vp.cssVar('button-bg-active'); }
-	&--readonly &__track {
-		cursor: default;
-		opacity: 0.5;
-		pointer-events: none;
-	}
+  &.vp--disabled {
+    opacity: 0.5;
+  }
+
+  &__track {
+    box-sizing: border-box;
+    cursor: pointer;
+    height: vp.cssVar('container-unit-size');
+    margin: 0 math.div(vp.$slider-knob-size, 2);
+    outline: none;
+    position: relative;
+
+    &::before {
+      background-color: vp.cssVar('input-bg');
+      border-radius: 1px;
+      content: '';
+      display: block;
+      height: 2px;
+      inset: 0;
+      margin: auto;
+      position: absolute;
+    }
+  }
+
+  &__knob {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+
+    &::before {
+      background-color: vp.cssVar('input-fg');
+      border-radius: 1px;
+      content: '';
+      display: block;
+      height: 2px;
+      inset: 0;
+      margin-bottom: auto;
+      margin-top: auto;
+      position: absolute;
+    }
+
+    &::after {
+      background-color: vp.cssVar('button-bg');
+      border-radius: vp.cssVar('blade-border-radius');
+      bottom: 0;
+      content: '';
+      display: block;
+      height: vp.$slider-knob-size;
+      margin-bottom: auto;
+      margin-top: auto;
+      position: absolute;
+      right: math.div(-1 * vp.$slider-knob-size, 2);
+      top: 0;
+      width: vp.$slider-knob-size;
+    }
+  }
+
+  &__track:hover &__knob::after {
+    background-color: vp.cssVar('button-bg-hover');
+  }
+
+  &__track:focus &__knob::after {
+    background-color: vp.cssVar('button-bg-focus');
+  }
+
+  &__track:active &__knob::after {
+    background-color: vp.cssVar('button-bg-active');
+  }
+
+  &--readonly &__track {
+    cursor: default;
+    opacity: 0.5;
+    pointer-events: none;
+  }
 }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useTooltip } from '../composables/useTooltip'
 import { usePaneConfig } from '../composables/usePaneConfig'
+import { useTooltip } from '../composables/useTooltip'
 
 const {
   label,

@@ -1,13 +1,14 @@
 @use '../vp';
 
 .vp-monitor {
-	&__value {
-		@extend %vp-monitor;
+  &__value {
+    @extend %vp-monitor;
 
-		padding-left: vp.cssVar('blade-h-padding');
-		padding-right: vp.cssVar('blade-h-padding');
-	}
-	&.#{vp.$disabled} &__value {
-		opacity: 0.5;
-	}
+    padding-left: vp.cssVar('blade-h-padding');
+    padding-right: vp.cssVar('blade-h-padding');
+  }
+
+  &.#{vp.$disabled} &__value {
+    opacity: 0.5;
+  }
 }

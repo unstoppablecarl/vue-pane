@@ -14,43 +14,43 @@ $z-index-picker: 1000;
 
 // CSS variables — short names to reduce file size
 $css-vars: (
-	'base-bg': 'bs-bg',
-	'base-border-radius': 'bs-br',
-	'base-font': 'bs-ff',
-	'base-shadow': 'bs-sh',
-	'blade-border-radius': 'bld-br',
-	'blade-h-padding': 'bld-hp',
-	'blade-value-width': 'bld-vw',
-	'button-bg': 'btn-bg',
-	'button-bg-active': 'btn-bg-a',
-	'button-bg-focus': 'btn-bg-f',
-	'button-bg-hover': 'btn-bg-h',
-	'button-fg': 'btn-fg',
-	'container-bg': 'cnt-bg',
-	'container-bg-active': 'cnt-bg-a',
-	'container-bg-focus': 'cnt-bg-f',
-	'container-bg-hover': 'cnt-bg-h',
-	'container-fg': 'cnt-fg',
-	'container-h-padding': 'cnt-hp',
-	'container-unit-size': 'cnt-usz',
-	'container-unit-spacing': 'cnt-usp',
-	'container-v-padding': 'cnt-vp',
-	'groove-fg': 'grv-fg',
-	'input-bg': 'in-bg',
-	'input-bg-active': 'in-bg-a',
-	'input-bg-focus': 'in-bg-f',
-	'input-bg-hover': 'in-bg-h',
-	'input-fg': 'in-fg',
-	'label-fg': 'lbl-fg',
-	'monitor-bg': 'mo-bg',
-	'monitor-fg': 'mo-fg',
+        'base-bg': 'bs-bg',
+        'base-border-radius': 'bs-br',
+        'base-font': 'bs-ff',
+        'base-shadow': 'bs-sh',
+        'blade-border-radius': 'bld-br',
+        'blade-h-padding': 'bld-hp',
+        'blade-value-width': 'bld-vw',
+        'button-bg': 'btn-bg',
+        'button-bg-active': 'btn-bg-a',
+        'button-bg-focus': 'btn-bg-f',
+        'button-bg-hover': 'btn-bg-h',
+        'button-fg': 'btn-fg',
+        'container-bg': 'cnt-bg',
+        'container-bg-active': 'cnt-bg-a',
+        'container-bg-focus': 'cnt-bg-f',
+        'container-bg-hover': 'cnt-bg-h',
+        'container-fg': 'cnt-fg',
+        'container-h-padding': 'cnt-hp',
+        'container-unit-size': 'cnt-usz',
+        'container-unit-spacing': 'cnt-usp',
+        'container-v-padding': 'cnt-vp',
+        'groove-fg': 'grv-fg',
+        'input-bg': 'in-bg',
+        'input-bg-active': 'in-bg-a',
+        'input-bg-focus': 'in-bg-f',
+        'input-bg-hover': 'in-bg-h',
+        'input-fg': 'in-fg',
+        'label-fg': 'lbl-fg',
+        'monitor-bg': 'mo-bg',
+        'monitor-fg': 'mo-fg',
 );
 
 @function cssVar($name) {
-	$short-name: map.get($css-vars, $name);
-	@if $short-name == null {
-		@error 'Short CSS variable for \'#{$name}\' not found.';
-	}
-	@return string.unquote('var(--' + $short-name + ')');
+  $short-name: map.get($css-vars, $name);
+  @if $short-name == null {
+    @error 'Short CSS variable for \'#{$name}\' not found.';
+  }
+  @return string.unquote('var(--' + $short-name + ')');
 }
 

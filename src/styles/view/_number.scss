@@ -2,109 +2,119 @@
 @use '../vp';
 
 .vp-text {
-	$knob-bounds-width: 12px;
-	$knob-visual-width: 2px;
+  $knob-bounds-width: 12px;
+  $knob-visual-width: 2px;
 
-	&--number &__input {
-		text-align: right;
-	}
-	&--dragging &__input {
-		opacity: 0.3;
-	}
-	&__knob {
-		cursor: ew-resize;
-		height: 100%;
-		left: calc(
-			#{vp.cssVar('blade-h-padding')} - #{math.div(
+  &--number &__input {
+    text-align: right;
+  }
+
+  &--dragging &__input {
+    opacity: 0.3;
+  }
+
+  &__knob {
+    cursor: ew-resize;
+    height: 100%;
+    left: calc(
+            #{vp.cssVar('blade-h-padding')} - #{math.div(
 				$knob-bounds-width - $knob-visual-width,
 				2
 			)}
-		);
-		position: absolute;
-		top: 0;
-		width: $knob-bounds-width;
+    );
+    position: absolute;
+    top: 0;
+    width: $knob-bounds-width;
 
-		&::before {
-			background-color: vp.cssVar('input-fg');
-			border-radius: math.div($knob-visual-width, 2);
-			bottom: 0;
-			content: '';
-			height: calc(#{vp.cssVar('container-unit-size')} - 4px);
-			left: 50%;
-			margin-bottom: auto;
-			margin-left: math.div(-$knob-visual-width, 2);
-			margin-top: auto;
-			opacity: 0.1;
-			position: absolute;
-			top: 0;
-			transition: border-radius 0.1s, height 0.1s, transform 0.1s, width 0.1s;
-			width: $knob-visual-width;
-		}
-	}
-	&__knob:hover::before,
-	&--dragging &__knob::before {
-		opacity: 1;
-	}
-	&--dragging &__knob::before {
-		border-radius: 50%;
-		height: 4px;
-		transform: translateX(math.div($knob-visual-width - 4px, 2));
-		width: 4px;
-	}
-	&__guide {
-		bottom: 0;
-		display: block;
-		height: 8px;
-		left: 50%;
-		margin: auto;
-		overflow: visible;
-		pointer-events: none;
-		position: absolute;
-		top: 0;
-		visibility: hidden;
-		width: 100%;
-	}
-	&--dragging &__guide {
-		visibility: visible;
-	}
-	&__guide-body {
-		fill: none;
-		stroke: vp.cssVar('input-fg');
-		stroke-dasharray: 1;
-	}
-	&__guide-head {
-		fill: none;
-		stroke: vp.cssVar('input-fg');
-	}
-	&__drag-tooltip {
-		background-color: vp.cssVar('container-fg');
-		border-radius: vp.cssVar('blade-border-radius');
-		color: vp.cssVar('base-bg');
-		font-family: vp.cssVar('base-font'), sans-serif;
-		font-size: 11px;
-		line-height: 1.5;
-		margin-left: math.div($knob-bounds-width, 2);
-		padding: 2px 4px;
-		pointer-events: none;
-		position: absolute;
-		transform: translate(-50%, calc(-100% - 4px));
-		visibility: hidden;
-		white-space: nowrap;
+    &::before {
+      background-color: vp.cssVar('input-fg');
+      border-radius: math.div($knob-visual-width, 2);
+      bottom: 0;
+      content: '';
+      height: calc(#{vp.cssVar('container-unit-size')} - 4px);
+      left: 50%;
+      margin-bottom: auto;
+      margin-left: math.div(-$knob-visual-width, 2);
+      margin-top: auto;
+      opacity: 0.1;
+      position: absolute;
+      top: 0;
+      transition: border-radius 0.1s, height 0.1s, transform 0.1s, width 0.1s;
+      width: $knob-visual-width;
+    }
+  }
 
-		&::after {
-			border-color: vp.cssVar('container-fg') transparent transparent transparent;
-			border-style: solid;
-			border-width: 3px 2px 0;
-			content: '';
-			height: 0;
-			left: 50%;
-			margin-left: -2px;
-			position: absolute;
-			top: 100%;
-			width: 0;
-		}
-	}
-	&--dragging &__drag-tooltip {
-		visibility: visible;
-	}
+  &__knob:hover::before,
+  &--dragging &__knob::before {
+    opacity: 1;
+  }
+
+  &--dragging &__knob::before {
+    border-radius: 50%;
+    height: 4px;
+    transform: translateX(math.div($knob-visual-width - 4px, 2));
+    width: 4px;
+  }
+
+  &__guide {
+    bottom: 0;
+    display: block;
+    height: 8px;
+    left: 50%;
+    margin: auto;
+    overflow: visible;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    visibility: hidden;
+    width: 100%;
+  }
+
+  &--dragging &__guide {
+    visibility: visible;
+  }
+
+  &__guide-body {
+    fill: none;
+    stroke: vp.cssVar('input-fg');
+    stroke-dasharray: 1;
+  }
+
+  &__guide-head {
+    fill: none;
+    stroke: vp.cssVar('input-fg');
+  }
+
+  &__drag-tooltip {
+    background-color: vp.cssVar('container-fg');
+    border-radius: vp.cssVar('blade-border-radius');
+    color: vp.cssVar('base-bg');
+    font-family: vp.cssVar('base-font'), sans-serif;
+    font-size: 11px;
+    line-height: 1.5;
+    margin-left: math.div($knob-bounds-width, 2);
+    padding: 2px 4px;
+    pointer-events: none;
+    position: absolute;
+    transform: translate(-50%, calc(-100% - 4px));
+    visibility: hidden;
+    white-space: nowrap;
+
+    &::after {
+      border-color: vp.cssVar('container-fg') transparent transparent transparent;
+      border-style: solid;
+      border-width: 3px 2px 0;
+      content: '';
+      height: 0;
+      left: 50%;
+      margin-left: -2px;
+      position: absolute;
+      top: 100%;
+      width: 0;
+    }
+  }
+
+  &--dragging &__drag-tooltip {
+    visibility: visible;
+  }
 }

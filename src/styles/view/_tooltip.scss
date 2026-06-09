@@ -1,17 +1,17 @@
 @use '../vp';
 
 .vp-tooltip {
-	background-color: #{vp.cssVar('base-bg')};
-	background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
-	border-radius: vp.cssVar('blade-border-radius');
-	box-shadow: vp.cssVar('base-shadow');
-	color: vp.cssVar('container-fg');
-	font-family: vp.cssVar('base-font'), sans-serif;
-	font-size: 11px;
-	line-height: 1.5;
-	max-width: 200px;
-	padding: 4px 8px;
-	pointer-events: none;
-	white-space: pre-wrap;
-	z-index: vp.$z-index-picker;
+  background-color: #{vp.cssVar('base-bg')};
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+  border-radius: vp.cssVar('blade-border-radius');
+  box-shadow: vp.cssVar('base-shadow');
+  color: vp.cssVar('container-fg');
+  font-family: vp.cssVar('base-font'), sans-serif;
+  font-size: 11px;
+  line-height: 1.5;
+  max-width: 200px;
+  padding: 4px 8px;
+  pointer-events: none;
+  white-space: pre-wrap;
+  z-index: vp.$z-index-picker;
 }

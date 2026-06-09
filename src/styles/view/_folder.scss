@@ -1,70 +1,82 @@
 @use '../vp';
 
 .vp-folder {
-	position: relative;
+  position: relative;
 
-	// Title button
-	&__title {
-		@extend %vp-folder_title;
-	}
-	// Title text inside button
-	&__title-text {
-		padding-left: 4px;
-	}
-	// Expand/collapse chevron
-	&__chevron {
-		@extend %vp-folder_mark;
-	}
-	&__title:disabled &__chevron {
-		display: none;
-	}
-	&#{&}--expanded > &__title > &__chevron {
-		@extend %vp-folder_mark-expanded;
-	}
-	// Children container
-	&__content {
-		@extend %vp-folder_container;
-		@extend %vp-container_children;
-		@extend %vp-container_subcontainers;
+  // Title button
+  &__title {
+    @extend %vp-folder_title;
+  }
 
-		padding-left: 4px;
-	}
-	&#{&}--expanded > &__content {
-		@extend %vp-folder_container-expanded;
-	}
-	&#{&}--complete:not(#{&}--expanded) > &__content {
-		@extend %vp-folder_container-shrinkedCompletely;
-	}
-	// Indent line
-	&__indent {
-		bottom: 0;
-		color: vp.cssVar('container-bg');
-		left: 0;
-		overflow: hidden;
-		position: absolute;
-		top: calc(#{vp.cssVar('container-unit-size')} + 4px);
-		width: max(vp.cssVar('base-border-radius'), 4px);
+  // Title text inside button
+  &__title-text {
+    padding-left: 4px;
+  }
 
-		&::before {
-			background-color: currentColor;
-			bottom: 0;
-			content: '';
-			left: 0;
-			position: absolute;
-			top: 0;
-			width: 4px;
-		}
-	}
-	&__title:hover + &__indent {
-		color: vp.cssVar('container-bg-hover');
-	}
-	&__title:focus + &__indent {
-		color: vp.cssVar('container-bg-focus');
-	}
-	&__title:active + &__indent {
-		color: vp.cssVar('container-bg-active');
-	}
-	&.#{vp.$disabled} > &__indent {
-		opacity: 0.5;
-	}
+  // Expand/collapse chevron
+  &__chevron {
+    @extend %vp-folder_mark;
+  }
+
+  &__title:disabled &__chevron {
+    display: none;
+  }
+
+  &#{&}--expanded > &__title > &__chevron {
+    @extend %vp-folder_mark-expanded;
+  }
+
+  // Children container
+  &__content {
+    @extend %vp-folder_container;
+    @extend %vp-container_children;
+    @extend %vp-container_subcontainers;
+
+    padding-left: 4px;
+  }
+
+  &#{&}--expanded > &__content {
+    @extend %vp-folder_container-expanded;
+  }
+
+  &#{&}--complete:not(#{&}--expanded) > &__content {
+    @extend %vp-folder_container-collapseComplete;
+  }
+
+  // Indent line
+  &__indent {
+    bottom: 0;
+    color: vp.cssVar('container-bg');
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    top: calc(#{vp.cssVar('container-unit-size')} + 4px);
+    width: max(vp.cssVar('base-border-radius'), 4px);
+
+    &::before {
+      background-color: currentColor;
+      bottom: 0;
+      content: '';
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 4px;
+    }
+  }
+
+  &__title:hover + &__indent {
+    color: vp.cssVar('container-bg-hover');
+  }
+
+  &__title:focus + &__indent {
+    color: vp.cssVar('container-bg-focus');
+  }
+
+  &__title:active + &__indent {
+    color: vp.cssVar('container-bg-active');
+  }
+
+  &.#{vp.$disabled} > &__indent {
+    opacity: 0.5;
+  }
 }

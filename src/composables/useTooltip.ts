@@ -1,5 +1,5 @@
-import { ref, useTemplateRef } from 'vue'
 import { flip, offset, shift, useFloating } from '@floating-ui/vue'
+import { ref, useTemplateRef } from 'vue'
 
 export function useTooltip() {
   const referenceEl = ref<HTMLElement | null>(null)

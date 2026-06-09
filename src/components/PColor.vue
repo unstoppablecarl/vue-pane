@@ -84,7 +84,7 @@ onUnmounted(() => document.removeEventListener('pointerdown', onPointerDown))
             class="vp-color__swatch-btn"
             @click="toggle"
           >
-            <div
+            <span
               class="vp-color__swatch-btn__color"
               :style="{ background: model }"
             />

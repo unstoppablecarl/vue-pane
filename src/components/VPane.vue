@@ -47,7 +47,7 @@ cascadeExpanded(isExpanded)
       @click="toggle"
     >
       {{ title }}
-      <div class="vp-pane__chevron" />
+      <span class="vp-pane__chevron" />
     </button>
     <div
       ref="containerRef"

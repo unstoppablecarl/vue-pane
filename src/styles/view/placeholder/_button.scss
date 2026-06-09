@@ -1,28 +1,31 @@
 @use '../../common/defs';
 
 %vp-button {
-	background-color: defs.cssVar('button-bg');
-	border-radius: defs.cssVar('blade-border-radius');
-	color: defs.cssVar('button-fg');
-	cursor: pointer;
-	display: block;
-	font-weight: bold;
-	height: defs.cssVar('container-unit-size');
-	line-height: defs.cssVar('container-unit-size');
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+  background-color: defs.cssVar('button-bg');
+  border-radius: defs.cssVar('blade-border-radius');
+  color: defs.cssVar('button-fg');
+  cursor: pointer;
+  display: block;
+  font-weight: bold;
+  height: defs.cssVar('container-unit-size');
+  line-height: defs.cssVar('container-unit-size');
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
-	&:hover {
-		background-color: defs.cssVar('button-bg-hover');
-	}
-	&:focus {
-		background-color: defs.cssVar('button-bg-focus');
-	}
-	&:active {
-		background-color: defs.cssVar('button-bg-active');
-	}
-	&:disabled {
-		opacity: 0.5;
-	}
+  &:hover {
+    background-color: defs.cssVar('button-bg-hover');
+  }
+
+  &:focus {
+    background-color: defs.cssVar('button-bg-focus');
+  }
+
+  &:active {
+    background-color: defs.cssVar('button-bg-active');
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
 }

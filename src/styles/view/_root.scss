@@ -1,126 +1,142 @@
 @use '../vp';
 
 :root {
-	@extend %vp-theming;
+  @extend %vp-theming;
 }
 
 // Resets for form elements inside any vp container, including teleported
 // overlays. :where() zeroes the container's specificity
 :where(.vp-pane, .vp-color__popup) {
-	button, input, select, textarea {
-		appearance: none;
-		background-color: transparent;
-		border-width: 0;
-		font-family: inherit;
-		font-size: inherit;
-		font-weight: inherit;
-		margin: 0;
-		outline: none;
-		padding: 0;
-	}
+  button, input, select, textarea {
+    appearance: none;
+    background-color: transparent;
+    border-width: 0;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    margin: 0;
+    outline: none;
+    padding: 0;
+  }
 }
 
 .vp-pane {
-	@extend %vp-theming;
+  @extend %vp-theming;
 
-	background-color: vp.cssVar('base-bg');
-	border-radius: vp.cssVar('base-border-radius');
-	box-shadow: 0 2px 4px vp.cssVar('base-shadow');
-	font-family: vp.cssVar('base-font');
-	font-size: 11px;
-	font-weight: 500;
-	line-height: 1;
-	text-align: left;
+  background-color: vp.cssVar('base-bg');
+  border-radius: vp.cssVar('base-border-radius');
+  box-shadow: 0 2px 4px vp.cssVar('base-shadow');
+  font-family: vp.cssVar('base-font');
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1;
+  text-align: left;
 
-	&__title {
-		@extend %vp-folder_title;
+  &__title {
+    @extend %vp-folder_title;
 
-		border-radius: vp.cssVar('base-border-radius');
-		padding-left: calc(
-			2px * 2 + #{vp.cssVar('container-h-padding')}
-		);
-	}
-	&#{&}--expanded &__title {
-		border-bottom-left-radius: 0;
-		border-bottom-right-radius: 0;
-		transition-delay: 0s;
-		transition-duration: 0s;
-	}
-	&--no-title > &__title {
-		display: none;
-	}
-	&__chevron {
-		@extend %vp-folder_mark;
-	}
-	&__title:disabled &__chevron {
-		display: none;
-	}
-	&#{&}--expanded &__chevron {
-		@extend %vp-folder_mark-expanded;
-	}
-	&__content {
-		@extend %vp-folder_container;
-		@extend %vp-container_children;
-	}
-	&#{&}--expanded &__content {
-		@extend %vp-folder_container-expanded;
-	}
-	&#{&}--complete:not(#{&}--expanded) &__content {
-		@extend %vp-folder_container-shrinkedCompletely;
-	}
+    border-radius: vp.cssVar('base-border-radius');
+    padding-left: calc(
+            2px * 2 + #{vp.cssVar('container-h-padding')}
+    );
+  }
 
-	// Last folder in root — rounded bottom corners
-	&__content {
-		& > .vp-folder:last-child > .vp-folder__content {
-			border-bottom-left-radius: vp.cssVar('base-border-radius');
-			border-bottom-right-radius: vp.cssVar('base-border-radius');
-		}
-		& > .vp-folder:last-child > .vp-folder__indent {
-			border-bottom-left-radius: vp.cssVar('base-border-radius');
-		}
-		& > .vp-folder:last-child:not(.vp-folder--expanded) > .vp-folder__title {
-			border-bottom-left-radius: vp.cssVar('base-border-radius');
-			border-bottom-right-radius: vp.cssVar('base-border-radius');
-		}
-		& > .vp-folder:last-child.vp-folder--expanded > .vp-folder__title {
-			transition-delay: 0s;
-			transition-duration: 0s;
-		}
-		// Last folder at any depth — rounded bottom-right corner when collapsed
-		& .vp-folder:not(:has(~ .vp-folder)):not(.vp-folder--expanded) > .vp-folder__title {
-			border-bottom-right-radius: vp.cssVar('base-border-radius');
-		}
-		// Last tab in root — rounded bottom corners
-		& > .vp-tab:last-child > .vp-tab__content {
-			border-bottom-left-radius: vp.cssVar('base-border-radius');
-			border-bottom-right-radius: vp.cssVar('base-border-radius');
-		}
-		& > .vp-tab:last-child > .vp-tab__indent {
-			border-bottom-left-radius: vp.cssVar('base-border-radius');
-		}
-	}
-	// First folder/tab when pane has no title
-	&--no-title &__content {
-		& > .vp-folder:first-child {
-			margin-top: calc(-1 * #{vp.cssVar('container-v-padding')});
+  &#{&}--expanded &__title {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    transition-delay: 0s;
+    transition-duration: 0s;
+  }
 
-			& > .vp-folder__title {
-				border-top-left-radius: vp.cssVar('base-border-radius');
-				border-top-right-radius: vp.cssVar('base-border-radius');
-			}
-		}
-		& > .vp-tab:first-child {
-			margin-top: calc(-1 * #{vp.cssVar('container-v-padding')});
+  &--no-title > &__title {
+    display: none;
+  }
 
-			& > .vp-tab__title-bar {
-				border-top-left-radius: vp.cssVar('base-border-radius');
-				border-top-right-radius: vp.cssVar('base-border-radius');
-			}
-		}
-	}
+  &__chevron {
+    @extend %vp-folder_mark;
+  }
 
-	&.#{vp.$disabled},
-	.#{vp.$disabled} {
-		pointer-events: none;
-	}
+  &__title:disabled &__chevron {
+    display: none;
+  }
+
+  &#{&}--expanded &__chevron {
+    @extend %vp-folder_mark-expanded;
+  }
+
+  &__content {
+    @extend %vp-folder_container;
+    @extend %vp-container_children;
+  }
+
+  &#{&}--expanded &__content {
+    @extend %vp-folder_container-expanded;
+  }
+
+  &#{&}--complete:not(#{&}--expanded) &__content {
+    @extend %vp-folder_container-collapseComplete;
+  }
+
+  // Last folder in root — rounded bottom corners
+  &__content {
+    & > .vp-folder:last-child > .vp-folder__content {
+      border-bottom-left-radius: vp.cssVar('base-border-radius');
+      border-bottom-right-radius: vp.cssVar('base-border-radius');
+    }
+
+    & > .vp-folder:last-child > .vp-folder__indent {
+      border-bottom-left-radius: vp.cssVar('base-border-radius');
+    }
+
+    & > .vp-folder:last-child:not(.vp-folder--expanded) > .vp-folder__title {
+      border-bottom-left-radius: vp.cssVar('base-border-radius');
+      border-bottom-right-radius: vp.cssVar('base-border-radius');
+    }
+
+    & > .vp-folder:last-child.vp-folder--expanded > .vp-folder__title {
+      transition-delay: 0s;
+      transition-duration: 0s;
+    }
+
+    // Last folder at any depth — rounded bottom-right corner when collapsed
+    & .vp-folder:not(:has(~ .vp-folder)):not(.vp-folder--expanded) > .vp-folder__title {
+      border-bottom-right-radius: vp.cssVar('base-border-radius');
+    }
+
+    // Last tab in root — rounded bottom corners
+    & > .vp-tab:last-child > .vp-tab__content {
+      border-bottom-left-radius: vp.cssVar('base-border-radius');
+      border-bottom-right-radius: vp.cssVar('base-border-radius');
+    }
+
+    & > .vp-tab:last-child > .vp-tab__indent {
+      border-bottom-left-radius: vp.cssVar('base-border-radius');
+    }
+  }
+
+  // First folder/tab when pane has no title
+  &--no-title &__content {
+    & > .vp-folder:first-child {
+      margin-top: calc(-1 * #{vp.cssVar('container-v-padding')});
+
+      & > .vp-folder__title {
+        border-top-left-radius: vp.cssVar('base-border-radius');
+        border-top-right-radius: vp.cssVar('base-border-radius');
+      }
+    }
+
+    & > .vp-tab:first-child {
+      margin-top: calc(-1 * #{vp.cssVar('container-v-padding')});
+
+      & > .vp-tab__title-bar {
+        border-top-left-radius: vp.cssVar('base-border-radius');
+        border-top-right-radius: vp.cssVar('base-border-radius');
+      }
+    }
+  }
+
+  &.#{vp.$disabled},
+  .#{vp.$disabled} {
+    pointer-events: none;
+  }
 }
