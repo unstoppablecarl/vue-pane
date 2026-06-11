@@ -18,7 +18,7 @@ const codePFolder = `<VPane title="Debug">
 <template>
   <section id="pfolder">
     <h2><a href="#pfolder">PFolder</a></h2>
-    <p>A collapsible group of controls inside a pane. Folders can be nested to any depth and independently persist their expanded state.</p>
+    <p>A collapsible group of controls inside a pane. Folders can be nested to any depth. Each folder's expanded state is persisted to <code>localStorage</code> under a hierarchical path built from its ancestors (e.g. <code>vp-pane: Debug/vp-folder: Transform</code>), so sibling folders with the same title never collide.</p>
 
     <div class="media">
       <div class="demo">
@@ -53,7 +53,7 @@ const codePFolder = `<VPane title="Debug">
       <tbody>
         <tr><td><code>title</code></td><td>string</td><td>Folder title (required).</td></tr>
         <tr><td><code>tooltip</code></td><td>string</td><td>Tooltip shown on hover.</td></tr>
-        <tr><td><code>id</code></td><td>string</td><td>Key for persisting expanded state. Defaults to <code>title</code>.</td></tr>
+        <tr><td><code>id</code></td><td>string</td><td>Storage path segment for this folder. Defaults to <code>title</code>. The full path is prefixed with all ancestor pane/folder IDs.</td></tr>
         <tr><td><code>disabled</code></td><td>boolean</td><td>Dims and disables all controls inside the folder.</td></tr>
         <tr><td><code>v-model:expanded</code></td><td>boolean</td><td>Two-way binding for open/closed state.</td></tr>
       </tbody>

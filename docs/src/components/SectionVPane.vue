@@ -9,11 +9,6 @@ const codeVPane = `<VPane title="Controls">
   <PText v-model="name" label="Name" />
 </VPane>`
 
-const codeVPaneNoTitle = `<!-- Omit title for an untitled (always-open) pane -->
-<VPane>
-  <PText v-model="name" label="Name" />
-</VPane>`
-
 const codeVPaneExpanded = `<!-- Two-way bind the open/closed state -->
 <VPane title="Controls" v-model:expanded="isOpen">
   <PText v-model="name" label="Name" />
@@ -23,7 +18,7 @@ const codeVPaneExpanded = `<!-- Two-way bind the open/closed state -->
 <template>
   <section id="vpane">
     <h2><a href="#vpane">VPane</a></h2>
-    <p>The root pane container. Wrap all other components inside it. An optional <code>title</code> prop adds a collapsible header that persists its expanded state via <code>localStorage</code>.</p>
+    <p>The root pane container. Wrap all other components inside it. A collapsible header is shown using the required <code>title</code> prop, and expanded state is automatically persisted to <code>localStorage</code>.</p>
 
     <h3 id="vpane-title">
       <a href="#vpane-title">With title</a>
@@ -38,26 +33,6 @@ const codeVPaneExpanded = `<!-- Two-way bind the open/closed state -->
             title="Controls"
             style="width:240px"
           >
-            <PText
-              v-model="demoText"
-              label="Name"
-            />
-          </VPane>
-        </div>
-      </div>
-    </div>
-
-    <h3 id="vpane-notitle">
-      <a href="#vpane-notitle">Without title</a>
-    </h3>
-    <p>Omit <code>title</code> to create an always-visible pane with no header.</p>
-    <div class="media">
-      <div class="demo">
-        <div class="demo__code">
-          <CodeBlock :code="codeVPaneNoTitle" />
-        </div>
-        <div class="demo__result">
-          <VPane style="width:240px">
             <PText
               v-model="demoText"
               label="Name"
@@ -94,8 +69,8 @@ const codeVPaneExpanded = `<!-- Two-way bind the open/closed state -->
     <table>
       <thead><tr><th>Prop</th><th>Type</th><th>Description</th></tr></thead>
       <tbody>
-        <tr><td><code>title</code></td><td>string</td><td>Collapsible header title. Omit for a titleless always-open pane.</td></tr>
-        <tr><td><code>id</code></td><td>string</td><td>Key for persisting expanded state in <code>localStorage</code>. Defaults to <code>title</code>.</td></tr>
+        <tr><td><code>title</code></td><td>string</td><td>Collapsible header title (required).</td></tr>
+        <tr><td><code>id</code></td><td>string</td><td>Storage key for this pane's expanded state. Defaults to <code>title</code>. Nested panes automatically prefix with their parent's path.</td></tr>
         <tr><td><code>disabled</code></td><td>boolean</td><td>Dims and disables pointer events on the pane.</td></tr>
         <tr><td><code>config</code></td><td>PaneConfig</td><td>Override tooltip icon and other shared settings for all children.</td></tr>
         <tr><td><code>v-model:expanded</code></td><td>boolean</td><td>Two-way binding for open/closed state.</td></tr>

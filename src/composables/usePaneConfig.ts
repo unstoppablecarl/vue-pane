@@ -3,18 +3,22 @@ import PTooltipIcon from '../components/PTooltipIcon.vue'
 
 export interface PaneConfig {
   readonly tooltipIcon?: Component | null
-  readonly expandedDefault?: boolean
+  readonly expandedDefault: boolean
+  readonly storageEnabled: boolean
+  readonly storageKey: string
 }
 
-const DEFAULTS: PaneConfig = {
+export const CONFIG_DEFAULTS: PaneConfig = {
   expandedDefault: true,
   tooltipIcon: PTooltipIcon,
+  storageKey: 'vue-pane',
+  storageEnabled: true,
 }
 
 export const PANE_CONFIG_KEY: InjectionKey<PaneConfig> = Symbol('vp-config')
 
 export function usePaneConfig(): PaneConfig {
-  return inject(PANE_CONFIG_KEY, DEFAULTS)
+  return inject(PANE_CONFIG_KEY, CONFIG_DEFAULTS)
 }
 
 export function providePaneConfig(config: Partial<PaneConfig> | null = null): void {

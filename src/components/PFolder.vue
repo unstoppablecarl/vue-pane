@@ -23,7 +23,7 @@ const containerRef = ref<HTMLElement | null>(null)
 const { isExpanded, toggle } = useFoldable(
   containerRef,
   expandedModel,
-  key ? `vp-folder-${key}` : undefined,
+  `vp-folder: ${key}`,
 )
 
 cascadeExpanded(isExpanded)

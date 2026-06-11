@@ -1,4 +1,5 @@
 import { computed, inject, type InjectionKey, nextTick, onMounted, provide, type Ref, ref, watch } from 'vue'
+import { useStore } from './store.ts'
 import { usePaneConfig } from './usePaneConfig.ts'
 
 function measureExpandedHeight(el: HTMLElement, expandedClass: string): number {
@@ -29,30 +30,31 @@ function measureExpandedHeight(el: HTMLElement, expandedClass: string): number {
 export function useFoldable(
   containerRef: Ref<HTMLElement | null>,
   expandedRef: Ref<boolean>,
-  storageKey?: string,
+  storageKey: string,
   expandedClass = 'vp-folder--expanded',
 ): {
   isExpanded: Ref<boolean>
   toggle: () => void
 } {
-  let stored: string | null = null
-  if (storageKey) {
-    stored = localStorage?.getItem?.(storageKey) ?? null
-  }
+  storageKey = cascadePath(storageKey)
+
   const config = usePaneConfig()
   const onToggle = (val: boolean) => expandedRef.value = val
   const initialPropValue = expandedRef.value as boolean | undefined
+
+  const store = useStore(config.storageKey)
+
   const isExpanded = ref(
     initialPropValue !== undefined
       ? initialPropValue
-      : stored !== null
-        ? stored === 'true'
-        : config.expandedDefault ?? true,
+      : config.storageEnabled
+        ? store.get(storageKey, config.expandedDefault ?? true)
+        : (config.expandedDefault ?? true),
   )
 
   watch(isExpanded, (val) => {
-    if (storageKey && typeof localStorage !== 'undefined') {
-      localStorage.setItem(storageKey, String(val))
+    if (config.storageEnabled) {
+      store.set(storageKey, val)
     }
     onToggle(val)
   })
@@ -136,4 +138,16 @@ export function cascadeExpanded(isExpanded: Ref<boolean>) {
   const parentExpanded = inject(EXPANDED_KEY, ref(true))
   const effectiveExpanded = computed(() => parentExpanded.value && isExpanded.value)
   provide(EXPANDED_KEY, effectiveExpanded)
+}
+
+export const PATH_KEY: InjectionKey<string> = Symbol('vp-path')
+
+export function cascadePath(id: string) {
+  const parentPath = inject(PATH_KEY, '')
+  let newPath = id
+  if (parentPath) {
+    newPath = parentPath + '/' + id
+  }
+  provide(PATH_KEY, newPath)
+  return newPath
 }

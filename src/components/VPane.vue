@@ -11,7 +11,7 @@ const {
   disabled,
   config,
 } = defineProps<{
-  title?: string
+  title: string
   id?: string
   disabled?: boolean
   config?: PaneConfig
@@ -27,7 +27,7 @@ const containerRef = ref<HTMLElement | null>(null)
 const { isExpanded, toggle } = useFoldable(
   containerRef,
   expandedModel,
-  key ? `vp-pane-${key}` : undefined,
+  `vp-pane: ${key}`,
 )
 
 cascadeExpanded(isExpanded)

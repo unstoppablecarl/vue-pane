@@ -20,6 +20,7 @@ import SectionPGraph from './components/SectionPGraph.vue'
 import SectionPColor from './components/SectionPColor.vue'
 import SectionPPoint2d from './components/SectionPPoint2d.vue'
 import SectionPTab from './components/SectionPTab.vue'
+import SectionPConfig from './components/SectionPConfig.vue'
 import SectionTheming from './components/SectionTheming.vue'
 
 // ─── Navigation ───────────────────────────────────────────────────────────────
@@ -36,6 +37,7 @@ const navGroups: NavGroup[] = [
     label: 'Components',
     items: [
       { label: 'VPane', id: 'vpane' },
+      { label: 'PConfig', id: 'pconfig' },
       { label: 'PFolder', id: 'pfolder' },
       { label: 'PLabel', id: 'plabel' },
       { label: 'PText', id: 'ptext' },
@@ -130,6 +132,7 @@ onUnmounted(() => clearInterval(timer))
       <main class="main">
         <SectionGettingStarted />
         <SectionVPane />
+        <SectionPConfig />
         <SectionPFolder />
         <SectionPLabel />
         <SectionPText />
