@@ -1,8 +1,10 @@
 import PButton from './components/PButton.vue'
 import PCheckbox from './components/PCheckbox.vue'
 import PColor from './components/PColor.vue'
+import PConfig from './components/PConfig.vue'
 import PFolder from './components/PFolder.vue'
 import PGraph from './components/PGraph.vue'
+import PHeading from './components/PHeading.vue'
 import PLabel from './components/PLabel.vue'
 import PMonitor from './components/PMonitor.vue'
 import PMonitorMultiline from './components/PMonitorMultiline.vue'
@@ -22,25 +24,28 @@ export type { PaneConfig } from './composables/usePaneConfig'
 export { usePaneConfig } from './composables/usePaneConfig'
 
 export {
-  VPane,
-  PFolder,
-  PLabel,
-  PText,
-  PNumber,
   PButton,
-  PSeparator,
   PCheckbox,
-  PSelect,
+  PColor,
+  PConfig,
+  PFolder,
+  PGraph,
+  PHeading,
+  PLabel,
   PMonitor,
   PMonitorMultiline,
+  PNumber,
+  PPoint2d,
+  PSelect,
+  PSeparator,
   PSlider,
   PTab,
-  PColor,
-  PGraph,
-  PPoint2d,
-  pollingRef,
-  pollingComputed,
+  PText,
+  VPane,
+
   isPollingRef,
+  pollingComputed,
+  pollingRef,
   usePolling,
   usePollingOrModel,
 }

@@ -23,7 +23,8 @@ export function usePaneConfig(): PaneConfig {
 
 export function providePaneConfig(config: Partial<PaneConfig> | null = null): void {
   provide(PANE_CONFIG_KEY, {
-    ...usePaneConfig(),
+    ...CONFIG_DEFAULTS,
+    ...inject(PANE_CONFIG_KEY, null),
     ...config,
   } as PaneConfig)
 }

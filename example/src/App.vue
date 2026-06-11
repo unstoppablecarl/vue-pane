@@ -16,6 +16,7 @@ import {
   PSlider,
   PTab,
   PText,
+  PHeading,
 } from 'vue-pane'
 
 const name = ref('World')
@@ -102,6 +103,7 @@ const activeTab = ref(0)
           label="X"
           tooltip="Horizontal offset in units"
         />
+        <PHeading label="testing" />
         <PNumber
           v-model="count"
           label="Y"
@@ -121,7 +123,10 @@ const activeTab = ref(0)
       </PFolder>
     </VPane>
 
-    <VPane style="width: 300px;">
+    <VPane
+      title="Test 2"
+      style="width: 300px;"
+    >
       <PText
         v-model="name"
         label="No-title pane"

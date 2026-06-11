@@ -10,7 +10,11 @@ export function useStore(storeId: string) {
   }
 
   function getStore(): Record<string, boolean> {
-    return JSON.parse(localStorage.getItem(storeId) ?? '{}')
+    try {
+      return JSON.parse(localStorage.getItem(storeId) ?? '{}')
+    } catch {
+      return {}
+    }
   }
 
   function get(path: string, defaultValue: boolean): boolean {

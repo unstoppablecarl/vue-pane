@@ -11,6 +11,11 @@
     display: block;
   }
 
+  &--heading {
+    border-top: 1px solid vp.cssVar('container-bg');
+    padding-top: 3px;
+  }
+
   &__text {
     color: vp.cssVar('label-fg');
     flex: 1;
