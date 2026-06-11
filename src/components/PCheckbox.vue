@@ -1,25 +1,36 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { type PollingRef } from '../composables/pollingRef'
 import { usePollingOrModel } from '../composables/usePolling'
 import PLabel from './PLabel.vue'
 
-const modelValue = defineModel<boolean>()
-const {
-  poll,
-  label,
-  tooltip,
-  readonly = false,
-} = defineProps<{
-  poll?: PollingRef<boolean>
+type Polling = {
+  poll: PollingRef<boolean>
+  modelValue?: never
+}
+type Model = {
+  poll?: never
+  modelValue?: boolean
+}
+
+type Props = {
   label?: string
   tooltip?: string
   readonly?: boolean
-}>()
+} & (Polling | Model)
 
-const model = usePollingOrModel(poll, modelValue)
+const props = defineProps<Props>()
+const emit = defineEmits<{ 'update:modelValue': [boolean] }>()
+
+const modelRef = computed<boolean | undefined>({
+  get: () => props.modelValue,
+  set: (val: boolean | undefined) => emit('update:modelValue', val!),
+})
+
+const model = usePollingOrModel(props.poll, modelRef)
 
 function onChange(e: Event) {
-  if (!readonly) model.value = (e.target as HTMLInputElement).checked
+  if (!props.readonly) model.value = (e.target as HTMLInputElement).checked
 }
 </script>
 <template>
@@ -38,11 +49,11 @@ function onChange(e: Event) {
           :checked="model"
           @change="onChange"
         >
-        <div class="vp-checkbox__box">
+        <span class="vp-checkbox__box">
           <svg viewBox="0 0 16 16">
             <path d="M2 8l4 4l8 -8" />
           </svg>
-        </div>
+        </span>
       </label>
     </div>
   </PLabel>

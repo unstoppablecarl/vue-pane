@@ -4,26 +4,35 @@ import { type PollingRef } from '../composables/pollingRef'
 import { usePollingOrModel } from '../composables/usePolling'
 import PLabel from './PLabel.vue'
 
-const modelValue = defineModel<number>()
-const {
-  poll,
-  label,
-  tooltip,
-  min,
-  max,
-  step = 1,
-  readonly = false,
-} = defineProps<{
-  poll?: PollingRef<number>
+type Polling = {
+  poll: PollingRef<number>
+  modelValue?: never
+}
+type Model = {
+  poll?: never
+  modelValue?: number
+}
+
+type Props = {
   label?: string
   tooltip?: string
   min?: number
   max?: number
   step?: number
   readonly?: boolean
-}>()
+} & (Polling | Model)
 
-const model = usePollingOrModel(poll, modelValue)
+const props = withDefaults(defineProps<Props>(), {
+  step: 1,
+})
+const emit = defineEmits<{ 'update:modelValue': [number] }>()
+
+const modelRef = computed<number | undefined>({
+  get: () => props.modelValue,
+  set: (val: number | undefined) => emit('update:modelValue', val!),
+})
+
+const model = usePollingOrModel(props.poll, modelRef)
 
 const isDragging = ref(false)
 const isFocused = ref(false)
@@ -37,13 +46,13 @@ watch(model, (val) => {
 })
 
 function clamp(val: number): number {
-  if (min !== undefined) val = Math.max(min, val)
-  if (max !== undefined) val = Math.min(max, val)
+  if (props.min !== undefined) val = Math.max(props.min, val)
+  if (props.max !== undefined) val = Math.min(props.max, val)
   return val
 }
 
 function snapToStep(val: number): number {
-  return Math.round(val / step) * step
+  return Math.round(val / props.step) * props.step
 }
 
 const guideBodyPath = computed(() => {
@@ -60,7 +69,7 @@ const guideHeadPath = computed(() => {
 })
 
 const tooltipText = computed(() => {
-  const decimals = step < 1 ? (String(step).split('.')[1]?.length ?? 0) : 0
+  const decimals = props.step < 1 ? (String(props.step).split('.')[1]?.length ?? 0) : 0
   return model.value.toFixed(decimals)
 })
 
@@ -84,11 +93,11 @@ function onKeydown(e: KeyboardEvent) {
   } else if (e.key === 'ArrowUp') {
     e.preventDefault()
     const multiplier = e.shiftKey ? 10 : 1
-    model.value = clamp(model.value + step * multiplier)
+    model.value = clamp(model.value + props.step * multiplier)
   } else if (e.key === 'ArrowDown') {
     e.preventDefault()
     const multiplier = e.shiftKey ? 10 : 1
-    model.value = clamp(model.value - step * multiplier)
+    model.value = clamp(model.value - props.step * multiplier)
   }
 }
 

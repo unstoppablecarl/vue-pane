@@ -28,13 +28,6 @@ export function usePolling(r: PollingRef<any>, visible = getPaneExpanded()) {
 }
 
 export function usePollingOrModel<T, S = T>(poll: PollingRef<T> | undefined, modelValue: Ref<T, S>, visible = getPaneExpanded()): Ref<NonNullable<T>, NonNullable<S>> {
-  if (poll !== undefined && modelValue.value !== undefined) {
-    throw new Error('Use either :poll or v-model, not both.')
-  }
-  if (poll === undefined && modelValue.value === undefined) {
-    throw new Error('Use either :poll or v-model.')
-  }
-
   if (poll) usePolling(poll, visible)
 
   return (poll ?? modelValue) as unknown as Ref<NonNullable<T>, NonNullable<S>>

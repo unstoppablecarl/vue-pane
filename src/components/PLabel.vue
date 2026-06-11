@@ -26,6 +26,7 @@ const config = usePaneConfig()
         @mouseenter="tooltip && show($event, tooltip)"
         @mouseleave="hide"
       />
+      <slot name="after-label-text" />
     </div>
     <div class="vp-label__value">
       <slot />

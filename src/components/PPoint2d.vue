@@ -5,24 +5,35 @@ import { usePickerFold } from '../composables/usePickerFold'
 import { usePollingOrModel } from '../composables/usePolling'
 import PLabel from './PLabel.vue'
 
-const modelValue = defineModel<{ x: number, y: number }>()
-const {
-  poll,
-  label,
-  tooltip,
-  min = -1,
-  max = 1,
-  readonly = false,
-} = defineProps<{
-  poll?: PollingRef<{ x: number, y: number }>
+type Polling = {
+  poll: PollingRef<{ x: number, y: number }>
+  modelValue?: never
+}
+type Model = {
+  poll?: never
+  modelValue?: { x: number, y: number }
+}
+
+type Props = {
   label?: string
   tooltip?: string
   min?: number
   max?: number
   readonly?: boolean
-}>()
+} & (Polling | Model)
 
-const model = usePollingOrModel(poll, modelValue)
+const props = withDefaults(defineProps<Props>(), {
+  min: -1,
+  max: 1,
+})
+const emit = defineEmits<{ 'update:modelValue': [{ x: number, y: number }] }>()
+
+const modelRef = computed<{ x: number, y: number } | undefined>({
+  get: () => props.modelValue,
+  set: (val: any) => emit('update:modelValue', val!),
+})
+
+const model = usePollingOrModel(props.poll, modelRef)
 
 const isOpen = ref(false)
 const panelRef = ref<HTMLElement | null>(null)
@@ -35,23 +46,23 @@ const localX = computed(() => model.value.x.toFixed(3))
 const localY = computed(() => model.value.y.toFixed(3))
 
 function clamp(val: number): number {
-  return Math.max(min, Math.min(max, val))
+  return Math.max(props.min, Math.min(props.max, val))
 }
 
 function onXBlur(e: Event) {
-  if (readonly) return
+  if (props.readonly) return
   const val = parseFloat((e.target as HTMLInputElement).value)
   if (!isNaN(val)) model.value = { x: clamp(val), y: model.value.y }
 }
 
 function onYBlur(e: Event) {
-  if (readonly) return
+  if (props.readonly) return
   const val = parseFloat((e.target as HTMLInputElement).value)
   if (!isNaN(val)) model.value = { x: model.value.x, y: clamp(val) }
 }
 
 function toggle() {
-  if (readonly) return
+  if (props.readonly) return
   isOpen.value = !isOpen.value
 }
 
@@ -78,13 +89,13 @@ onMounted(() => {
 })
 
 const crosshairX = computed(() => {
-  const range = max - min
-  return ((model.value.x - min) / range) * canvasSize
+  const range = props.max - props.min
+  return ((model.value.x - props.min) / range) * canvasSize
 })
 
 const crosshairY = computed(() => {
-  const range = max - min
-  return canvasSize - ((model.value.y - min) / range) * canvasSize
+  const range = props.max - props.min
+  return canvasSize - ((model.value.y - props.min) / range) * canvasSize
 })
 
 let canvasDragging = false
@@ -94,15 +105,15 @@ function posToValue(e: PointerEvent) {
   const rect = canvas.getBoundingClientRect()
   const rx = (e.clientX - rect.left) / rect.width
   const ry = 1 - (e.clientY - rect.top) / rect.height
-  const range = max - min
+  const range = props.max - props.min
   return {
-    x: clamp(min + rx * range),
-    y: clamp(min + ry * range),
+    x: clamp(props.min + rx * range),
+    y: clamp(props.min + ry * range),
   }
 }
 
 function onCanvasDown(e: PointerEvent) {
-  if (readonly) return
+  if (props.readonly) return
   e.preventDefault()
   ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
   canvasDragging = true
@@ -110,7 +121,7 @@ function onCanvasDown(e: PointerEvent) {
 }
 
 function onCanvasMove(e: PointerEvent) {
-  if (readonly || !canvasDragging) return
+  if (props.readonly || !canvasDragging) return
   model.value = posToValue(e)
 }
 

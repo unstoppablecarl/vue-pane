@@ -1,28 +1,37 @@
 <script setup lang="ts">
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { flip, offset, shift, useFloating } from '@floating-ui/vue'
-import { onMounted, onUnmounted, ref } from 'vue'
 import { ChromePicker, tinycolor } from 'vue-color'
 import 'vue-color/style.css'
 import { type PollingRef } from '../composables/pollingRef'
 import { usePollingOrModel } from '../composables/usePolling'
 import PLabel from './PLabel.vue'
 
-const modelValue = defineModel<string>()
-const {
-  poll,
-  label,
-  tooltip,
-  alpha = false,
-  readonly = false,
-} = defineProps<{
-  poll?: PollingRef<string>
+type Polling = {
+  poll: PollingRef<string>
+  modelValue?: never
+}
+type Model = {
+  poll?: never
+  modelValue?: string
+}
+
+type Props = {
   label?: string
   tooltip?: string
   alpha?: boolean
   readonly?: boolean
-}>()
+} & (Polling | Model)
 
-const model = usePollingOrModel(poll, modelValue)
+const props = defineProps<Props>()
+const emit = defineEmits<{ 'update:modelValue': [string] }>()
+
+const modelRef = computed<string | undefined>({
+  get: () => props.modelValue,
+  set: (val: string | undefined) => emit('update:modelValue', val!),
+})
+
+const model = usePollingOrModel(props.poll, modelRef)
 
 const isOpen = ref(false)
 const swatchRef = ref<HTMLElement | null>(null)
@@ -35,24 +44,24 @@ const { floatingStyles } = useFloating(swatchRef, pickerRef, {
 })
 
 function toggle() {
-  if (readonly) return
+  if (props.readonly) return
   isOpen.value = !isOpen.value
 }
 
 function onPickerChange(color: unknown) {
-  if (readonly) return
+  if (props.readonly) return
   const tc = tinycolor(color as Parameters<typeof tinycolor>[0])
   if (tc.isValid()) {
-    model.value = alpha ? tc.toHex8String() : tc.toHexString()
+    model.value = props.alpha ? tc.toHex8String() : tc.toHexString()
   }
 }
 
 function onHexChange(e: Event) {
-  if (readonly) return
+  if (props.readonly) return
   const val = (e.target as HTMLInputElement).value
   const tc = tinycolor(val)
   if (tc.isValid()) {
-    model.value = alpha ? tc.toHex8String() : tc.toHexString()
+    model.value = props.alpha ? tc.toHex8String() : tc.toHexString()
   }
 }
 

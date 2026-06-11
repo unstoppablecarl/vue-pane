@@ -4,38 +4,49 @@ import { type PollingRef } from '../composables/pollingRef'
 import { usePollingOrModel } from '../composables/usePolling'
 import PLabel from './PLabel.vue'
 
-const modelValue = defineModel<number>()
-const {
-  poll,
-  label,
-  tooltip,
-  min = 0,
-  max = 1,
-  step = null,
-  readonly = false,
-} = defineProps<{
-  poll?: PollingRef<number>
+type Polling = {
+  poll: PollingRef<number>
+  modelValue?: never
+}
+type Model = {
+  poll?: never
+  modelValue?: number
+}
+
+type Props = {
   label?: string
   tooltip?: string
   min?: number
   max?: number
   step?: number | null
   readonly?: boolean
-}>()
+} & (Polling | Model)
 
-const model = usePollingOrModel(poll, modelValue)
+const props = withDefaults(defineProps<Props>(), {
+  min: 0,
+  max: 1,
+  step: null,
+})
+const emit = defineEmits<{ 'update:modelValue': [number] }>()
+
+const modelRef = computed<number | undefined>({
+  get: () => props.modelValue,
+  set: (val: number | undefined) => emit('update:modelValue', val!),
+})
+
+const model = usePollingOrModel(props.poll, modelRef)
 
 const trackRef = ref<HTMLElement | null>(null)
 const isDragging = ref(false)
 
 const knobPercent = computed(() => {
-  const range = max - min
+  const range = props.max - props.min
   if (range === 0) return 0
-  return ((model.value - min) / range) * 100
+  return ((model.value - props.min) / range) * 100
 })
 
 function clamp(val: number): number {
-  return Math.max(min, Math.min(max, val))
+  return Math.max(props.min, Math.min(props.max, val))
 }
 
 function valueFromPointer(e: PointerEvent): number {
@@ -43,13 +54,13 @@ function valueFromPointer(e: PointerEvent): number {
   if (!el) return model.value
   const rect = el.getBoundingClientRect()
   const ratio = (e.clientX - rect.left) / rect.width
-  const raw = min + ratio * (max - min)
-  if (step === null) return clamp(raw)
-  return clamp(Math.round(raw / step) * step)
+  const raw = props.min + ratio * (props.max - props.min)
+  if (props.step === null) return clamp(raw)
+  return clamp(Math.round(raw / props.step) * props.step)
 }
 
 function onTrackPointerDown(e: PointerEvent) {
-  if (readonly) return
+  if (props.readonly) return
   e.preventDefault()
   ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
   isDragging.value = true
@@ -57,7 +68,7 @@ function onTrackPointerDown(e: PointerEvent) {
 }
 
 function onTrackPointerMove(e: PointerEvent) {
-  if (readonly || !isDragging.value) return
+  if (props.readonly || !isDragging.value) return
   model.value = valueFromPointer(e)
 }
 
@@ -66,8 +77,8 @@ function onPointerUp() {
 }
 
 function onKeydown(e: KeyboardEvent) {
-  if (readonly) return
-  const increment = step ?? (max - min) / 100
+  if (props.readonly) return
+  const increment = props.step ?? (props.max - props.min) / 100
   if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
     e.preventDefault()
     model.value = clamp(model.value + increment * (e.shiftKey ? 10 : 1))

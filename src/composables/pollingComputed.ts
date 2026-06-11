@@ -45,10 +45,9 @@ export function pollingComputed<T>(getter: () => T, interval = 100): PollingComp
     sync()
   }
 
-  const result = readonly(r) as unknown as PollingComputed<T>
-  Object.defineProperty(result, POLLING_REF, { value: true })
-  ;(result as any).subscribe = subscribe
-  ;(result as any).unsubscribe = unsubscribe
+  Object.defineProperty(r, POLLING_REF, { value: true })
+  ;(r as any).subscribe = subscribe
+  ;(r as any).unsubscribe = unsubscribe
 
-  return result
+  return readonly(r) as unknown as PollingComputed<T>
 }

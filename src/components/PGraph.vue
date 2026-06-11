@@ -12,6 +12,7 @@ const {
   tooltip,
   min,
   max,
+  decimalPlaces,
 } = defineProps<{
   poll?: PollingRef<number>
   historyLength?: number
@@ -20,6 +21,7 @@ const {
   tooltip?: string
   min?: number
   max?: number
+  decimalPlaces?: number
 }>()
 
 if (poll !== undefined && values !== undefined) {
@@ -27,12 +29,24 @@ if (poll !== undefined && values !== undefined) {
 }
 
 const history = ref<number[]>([])
+const lastValueRaw = ref<number>(0)
+const lastValue = computed(() => {
+  if (decimalPlaces !== undefined) {
+    return round(lastValueRaw.value, decimalPlaces)
+  }
+  return lastValueRaw.value
+})
+
+function round(value: number, decimals: number): number {
+  return Number(Math.round(Number(value + 'e' + decimals)) + 'e-' + decimals)
+}
 
 if (poll) {
   usePolling(poll)
   watch(() => poll?.value, (val) => {
-    if (val !== undefined) {
+    if (val !== undefined && !isNaN(val)) {
       history.value = [...history.value.slice(-(historyLength - 1)), val]
+      lastValueRaw.value = val
     }
   })
 }
@@ -46,7 +60,7 @@ const polylinePoints = computed(() => {
   const maxV = max ?? Math.max(...vals)
   const range = maxV - minV || 1
   return vals.map((v, i) => {
-    const x = (i / (vals.length - 1)) * 100
+    const x = (i / Math.max(1, vals.length - 1)) * 100
     const y = 100 - ((v - minV) / range) * 100
     return `${x},${y}`
   }).join(' ')
@@ -57,6 +71,16 @@ const polylinePoints = computed(() => {
     :label="label"
     :tooltip="tooltip"
   >
+    <template
+      #after-label-text
+    >
+      <slot
+        name="last-value"
+        v-bind="{lastValue, lastValueRaw}"
+      >
+        {{ lastValue }}
+      </slot>
+    </template>
     <div class="vp-graph">
       <svg
         class="vp-graph__svg"

@@ -1,27 +1,37 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { type PollingRef } from '../composables/pollingRef'
 import { usePollingOrModel } from '../composables/usePolling'
 import PLabel from './PLabel.vue'
 
-const modelValue = defineModel<string | number>()
-const {
-  poll,
-  label,
-  tooltip,
-  options,
-  readonly = false,
-} = defineProps<{
-  poll?: PollingRef<string | number>
+type Polling = {
+  poll: PollingRef<string | number>
+  modelValue?: never
+}
+type Model = {
+  poll?: never
+  modelValue?: string | number
+}
+
+type Props = {
   label?: string
   tooltip?: string
   options: { value: string | number, label: string }[]
   readonly?: boolean
-}>()
+} & (Polling | Model)
 
-const model = usePollingOrModel(poll, modelValue)
+const props = defineProps<Props>()
+const emit = defineEmits<{ 'update:modelValue': [string | number] }>()
+
+const modelRef = computed<string | number | undefined>({
+  get: () => props.modelValue,
+  set: (val: string | number | undefined) => emit('update:modelValue', val!),
+})
+
+const model = usePollingOrModel(props.poll, modelRef)
 
 function onChange(e: Event) {
-  if (!readonly) model.value = (e.target as HTMLSelectElement).value
+  if (!props.readonly) model.value = (e.target as HTMLSelectElement).value
 }
 </script>
 <template>
