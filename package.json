@@ -1,6 +1,6 @@
 {
   "name": "vue-pane",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "A Vue 3 debug/inspector pane component library inspired by Tweakpane.",
   "type": "module",
   "main": "./dist/vue-pane.umd.cjs",
@@ -13,7 +13,8 @@
       "source": "./src/index.ts",
       "import": "./dist/vue-pane.js",
       "require": "./dist/vue-pane.umd.cjs"
-    }
+    },
+    "./src/*": "./src/*"
   },
   "files": [
     "dist",
