@@ -30,8 +30,10 @@ const history = ref<number[]>([])
 
 if (poll) {
   usePolling(poll)
-  watch(poll, (val) => {
-    history.value = [...history.value.slice(-(historyLength - 1)), val]
+  watch(() => poll?.value, (val) => {
+    if (val !== undefined) {
+      history.value = [...history.value.slice(-(historyLength - 1)), val]
+    }
   })
 }
 
