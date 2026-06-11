@@ -14,6 +14,7 @@ import PSlider from './components/PSlider.vue'
 import PTab from './components/PTab.vue'
 import PText from './components/PText.vue'
 import VPane from './components/VPane.vue'
+import { pollingComputed } from './composables/pollingComputed.ts'
 import { isPollingRef, pollingRef } from './composables/pollingRef.ts'
 import { usePolling, usePollingOrModel } from './composables/usePolling.ts'
 
@@ -38,6 +39,7 @@ export {
   PGraph,
   PPoint2d,
   pollingRef,
+  pollingComputed,
   isPollingRef,
   usePolling,
   usePollingOrModel,
