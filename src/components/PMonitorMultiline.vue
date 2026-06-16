@@ -29,6 +29,9 @@ const displayValue = computed(() => poll?.value ?? value)
     :label="label"
     :tooltip="tooltip"
   >
+    <template #tooltip>
+      <slot name="tooltip" />
+    </template>
     <div class="vp-monitor-multi">
       <textarea
         class="vp-monitor-multi__value"

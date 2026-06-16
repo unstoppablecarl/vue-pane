@@ -134,6 +134,9 @@ function onCanvasUp() {
     :label="label"
     :tooltip="tooltip"
   >
+    <template #tooltip>
+      <slot name="tooltip" />
+    </template>
     <div
       class="vp-point-2d"
       :class="{ 'vp-point-2d--expanded': isOpen, 'vp-point-2d--complete': isComplete, 'vp-point-2d--readonly': readonly }"

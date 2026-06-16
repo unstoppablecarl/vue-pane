@@ -80,6 +80,9 @@ onUnmounted(() => document.removeEventListener('pointerdown', onPointerDown))
     :label="label"
     :tooltip="tooltip"
   >
+    <template #tooltip>
+      <slot name="tooltip" />
+    </template>
     <div
       class="vp-color"
       :class="{ 'vp-color--readonly': readonly }"

@@ -16,6 +16,10 @@
     padding-top: 3px;
   }
 
+  &__tooltip-icon {
+    margin-right: 0.5em;
+  }
+
   &__text {
     color: vp.cssVar('label-fg');
     flex: 1;

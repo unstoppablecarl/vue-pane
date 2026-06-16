@@ -13,6 +13,7 @@ const {
   min,
   max,
   decimalPlaces,
+  showLastValue = true,
 } = defineProps<{
   poll?: PollingRef<number>
   historyLength?: number
@@ -22,6 +23,7 @@ const {
   min?: number
   max?: number
   decimalPlaces?: number
+  showLastValue?: boolean
 }>()
 
 if (poll !== undefined && values !== undefined) {
@@ -49,6 +51,10 @@ if (poll) {
       lastValueRaw.value = val
     }
   })
+} else if (values) {
+  watch(() => values, (val: number[]) => {
+    lastValueRaw.value = val[val.length - 1]
+  }, { immediate: true })
 }
 
 const activeValues = computed(() => poll ? history.value : (values ?? []))
@@ -71,10 +77,14 @@ const polylinePoints = computed(() => {
     :label="label"
     :tooltip="tooltip"
   >
+    <template #tooltip>
+      <slot name="tooltip" />
+    </template>
     <template
       #after-label-text
     >
       <slot
+        v-if="showLastValue"
         name="last-value"
         v-bind="{lastValue, lastValueRaw}"
       >
@@ -94,4 +104,8 @@ const polylinePoints = computed(() => {
 </template>
 <style lang="scss">
 @use '../styles/view/graph';
+
+.label-after {
+  margin-left: 0.5em;
+}
 </style>

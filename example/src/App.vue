@@ -102,7 +102,12 @@ const activeTab = ref(0)
           v-model="count"
           label="X"
           tooltip="Horizontal offset in units"
-        />
+        >
+          <template #tooltip>
+            <h3>Tooltip heading</h3>
+            <p>test tooltip content</p>
+          </template>
+        </PNumber>
         <PHeading label="testing" />
         <PNumber
           v-model="count"

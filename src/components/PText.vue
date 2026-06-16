@@ -34,6 +34,9 @@ const model = usePollingOrModel(props.poll, modelRef)
     :label="label"
     :tooltip="tooltip"
   >
+    <template #tooltip>
+      <slot name="tooltip" />
+    </template>
     <div
       class="vp-text"
       :class="{ 'vp-text--readonly': readonly }"

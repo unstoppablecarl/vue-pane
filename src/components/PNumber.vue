@@ -133,6 +133,9 @@ function onKnobPointerUp() {
     :label="label"
     :tooltip="tooltip"
   >
+    <template #tooltip>
+      <slot name="tooltip" />
+    </template>
     <div
       class="vp-text vp-text--number"
       :class="{ 'vp-text--dragging': isDragging, 'vp-text--readonly': readonly }"

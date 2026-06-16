@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Comment, computed, Fragment, useSlots } from 'vue'
 import { usePaneConfig } from '../composables/usePaneConfig'
 import { useTooltip } from '../composables/useTooltip'
 
@@ -10,6 +11,17 @@ const {
   tooltip?: string
 }>()
 
+const slots = useSlots()
+const hasTooltipSlot = computed(() => {
+  if (!slots.tooltip) return false
+  return slots.tooltip().some((vnode) => {
+    if (vnode.type === Comment) return false
+    if (vnode.type === Fragment) return Array.isArray(vnode.children) && (vnode.children as unknown[]).length > 0
+    return true
+  })
+})
+const hasTooltip = computed(() => !!(tooltip || hasTooltipSlot.value))
+
 const { floatingStyles, visible, activeText, show, hide } = useTooltip()
 const config = usePaneConfig()
 </script>
@@ -20,19 +32,23 @@ const config = usePaneConfig()
   >
     <div class="vp-label__text">
       {{ label }}
-      <component
-        :is="config.tooltipIcon"
-        v-if="tooltip && config.tooltipIcon"
-        @mouseenter="tooltip && show($event, tooltip)"
-        @mouseleave="hide"
-      />
+      <span
+        v-if="hasTooltip && config.tooltipIcon"
+        class="vp-label__tooltip-icon"
+      >
+        <component
+          :is="config.tooltipIcon"
+          @mouseenter="show($event, tooltip || '')"
+          @mouseleave="hide"
+        />
+      </span>
       <slot name="after-label-text" />
     </div>
     <div class="vp-label__value">
       <slot />
     </div>
     <Teleport
-      v-if="tooltip"
+      v-if="hasTooltip"
       to="body"
     >
       <div
@@ -41,7 +57,13 @@ const config = usePaneConfig()
         class="vp-tooltip"
         :style="floatingStyles"
       >
-        {{ activeText }}
+        <slot
+          v-if="hasTooltipSlot"
+          name="tooltip"
+        />
+        <span
+          v-else
+        >{{ activeText }}</span>
       </div>
     </Teleport>
   </div>

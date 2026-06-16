@@ -93,6 +93,9 @@ function onKeydown(e: KeyboardEvent) {
     :label="label"
     :tooltip="tooltip"
   >
+    <template #tooltip>
+      <slot name="tooltip" />
+    </template>
     <div
       class="vp-slider"
       :class="{ 'vp-slider--readonly': readonly }"

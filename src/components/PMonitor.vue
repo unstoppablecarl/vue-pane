@@ -29,6 +29,9 @@ const displayValue = computed(() => poll?.value ?? value)
     :label="label"
     :tooltip="tooltip"
   >
+    <template #tooltip>
+      <slot name="tooltip" />
+    </template>
     <div class="vp-monitor">
       <div class="vp-monitor__value">
         {{ displayValue }}

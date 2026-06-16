@@ -39,6 +39,9 @@ function onChange(e: Event) {
     :label="label"
     :tooltip="tooltip"
   >
+    <template #tooltip>
+      <slot name="tooltip" />
+    </template>
     <div
       class="vp-select"
       :class="{ 'vp-select--readonly': readonly }"
