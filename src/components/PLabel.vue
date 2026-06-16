@@ -34,13 +34,11 @@ const config = usePaneConfig()
       {{ label }}<span
         v-if="hasTooltip && config.tooltipIcon"
         class="vp-label__tooltip-icon"
-      >&nbsp;
-        <component
-          :is="config.tooltipIcon"
-          @mouseenter="show($event, tooltip || '')"
-          @mouseleave="hide"
-        />
-      </span>
+      >&nbsp;<component
+        :is="config.tooltipIcon"
+        @mouseenter="show($event, tooltip || '')"
+        @mouseleave="hide"
+      /></span>
       <slot name="after-label-text" />
     </div>
     <div class="vp-label__value">

@@ -100,7 +100,7 @@ const activeTab = ref(0)
       >
         <PNumber
           v-model="count"
-          label="X"
+          label="X das fdas fads fdas fsdas adffasd fdadsfzz z"
           tooltip="Horizontal offset in units"
         >
           <template #tooltip>
