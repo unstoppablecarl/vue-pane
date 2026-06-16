@@ -5,9 +5,11 @@ import { useTooltip } from '../composables/useTooltip'
 const {
   label,
   tooltip,
+  disabled = false,
 } = defineProps<{
   label: string
   tooltip?: string
+  disabled?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -21,6 +23,8 @@ const config = usePaneConfig()
   <div class="vp-button">
     <button
       class="vp-button__btn"
+      :class="{'vp--disabled': disabled}"
+      :disabled="disabled"
       @click="emit('click')"
     >
       <span class="vp-button__label">

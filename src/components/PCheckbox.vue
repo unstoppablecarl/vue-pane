@@ -17,20 +17,28 @@ type Props = {
   label?: string
   tooltip?: string
   readonly?: boolean
+  disabled?: boolean
 } & (Polling | Model)
 
-const props = defineProps<Props>()
+const {
+  label,
+  tooltip,
+  readonly,
+  disabled,
+  poll,
+  modelValue,
+} = defineProps<Props>()
 const emit = defineEmits<{ 'update:modelValue': [boolean] }>()
 
 const modelRef = computed<boolean | undefined>({
-  get: () => props.modelValue,
+  get: () => modelValue,
   set: (val: boolean | undefined) => emit('update:modelValue', val!),
 })
 
-const model = usePollingOrModel(props.poll, modelRef)
+const model = usePollingOrModel(poll, modelRef)
 
 function onChange(e: Event) {
-  if (!props.readonly) model.value = (e.target as HTMLInputElement).checked
+  if (!readonly) model.value = (e.target as HTMLInputElement).checked
 }
 </script>
 <template>
@@ -43,13 +51,17 @@ function onChange(e: Event) {
     </template>
     <div
       class="vp-checkbox"
-      :class="{ 'vp-checkbox--readonly': readonly }"
+      :class="{
+        'vp-checkbox--readonly': readonly,
+        'vp--disabled': disabled,
+      }"
     >
       <label class="vp-checkbox__label">
         <input
           class="vp-checkbox__input"
           type="checkbox"
           :checked="model"
+          :disabled="disabled"
           @change="onChange"
         >
         <span class="vp-checkbox__box">

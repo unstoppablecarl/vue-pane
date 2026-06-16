@@ -9,11 +9,13 @@ const {
   value,
   label,
   tooltip,
+  disabled,
 } = defineProps<{
   poll?: PollingRef<unknown>
   value?: unknown
   label?: string
   tooltip?: string
+  disabled?: boolean
 }>()
 
 if (poll !== undefined && value !== undefined) {
@@ -32,10 +34,14 @@ const displayValue = computed(() => poll?.value ?? value)
     <template #tooltip>
       <slot name="tooltip" />
     </template>
-    <div class="vp-monitor-multi">
+    <div
+      class="vp-monitor-multi"
+      :class="{ 'vp--disabled': disabled }"
+    >
       <textarea
         class="vp-monitor-multi__value"
         readonly
+        :disabled="disabled"
         :value="String(displayValue)"
       />
     </div>

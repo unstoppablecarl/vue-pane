@@ -31,11 +31,10 @@ const config = usePaneConfig()
     :class="{ 'vp-label--no-label': !label }"
   >
     <div class="vp-label__text">
-      {{ label }}
-      <span
+      {{ label }}<span
         v-if="hasTooltip && config.tooltipIcon"
         class="vp-label__tooltip-icon"
-      >
+      >&nbsp;
         <component
           :is="config.tooltipIcon"
           @mouseenter="show($event, tooltip || '')"

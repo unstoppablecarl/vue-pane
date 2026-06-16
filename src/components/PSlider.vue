@@ -20,33 +20,41 @@ type Props = {
   max?: number
   step?: number | null
   readonly?: boolean
+  disabled?: boolean
 } & (Polling | Model)
 
-const props = withDefaults(defineProps<Props>(), {
-  min: 0,
-  max: 1,
-  step: null,
-})
+const {
+  min = 0,
+  max = 1,
+  step = null,
+  modelValue,
+  poll,
+  label,
+  tooltip,
+  readonly,
+  disabled,
+} = defineProps<Props>()
+
 const emit = defineEmits<{ 'update:modelValue': [number] }>()
 
 const modelRef = computed<number | undefined>({
-  get: () => props.modelValue,
+  get: () => modelValue,
   set: (val: number | undefined) => emit('update:modelValue', val!),
 })
 
-const model = usePollingOrModel(props.poll, modelRef)
+const model = usePollingOrModel(poll, modelRef)
 
 const trackRef = ref<HTMLElement | null>(null)
 const isDragging = ref(false)
 
 const knobPercent = computed(() => {
-  const range = props.max - props.min
+  const range = max - min
   if (range === 0) return 0
-  return ((model.value - props.min) / range) * 100
+  return ((model.value - min) / range) * 100
 })
 
 function clamp(val: number): number {
-  return Math.max(props.min, Math.min(props.max, val))
+  return Math.max(min, Math.min(max, val))
 }
 
 function valueFromPointer(e: PointerEvent): number {
@@ -54,13 +62,13 @@ function valueFromPointer(e: PointerEvent): number {
   if (!el) return model.value
   const rect = el.getBoundingClientRect()
   const ratio = (e.clientX - rect.left) / rect.width
-  const raw = props.min + ratio * (props.max - props.min)
-  if (props.step === null) return clamp(raw)
-  return clamp(Math.round(raw / props.step) * props.step)
+  const raw = min + ratio * (max - min)
+  if (step === null) return clamp(raw)
+  return clamp(Math.round(raw / step) * step)
 }
 
 function onTrackPointerDown(e: PointerEvent) {
-  if (props.readonly) return
+  if (readonly || disabled) return
   e.preventDefault()
   ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
   isDragging.value = true
@@ -68,7 +76,7 @@ function onTrackPointerDown(e: PointerEvent) {
 }
 
 function onTrackPointerMove(e: PointerEvent) {
-  if (props.readonly || !isDragging.value) return
+  if (readonly || disabled || !isDragging.value) return
   model.value = valueFromPointer(e)
 }
 
@@ -77,8 +85,8 @@ function onPointerUp() {
 }
 
 function onKeydown(e: KeyboardEvent) {
-  if (props.readonly) return
-  const increment = props.step ?? (props.max - props.min) / 100
+  if (readonly || disabled) return
+  const increment = step ?? (max - min) / 100
   if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
     e.preventDefault()
     model.value = clamp(model.value + increment * (e.shiftKey ? 10 : 1))
@@ -98,7 +106,7 @@ function onKeydown(e: KeyboardEvent) {
     </template>
     <div
       class="vp-slider"
-      :class="{ 'vp-slider--readonly': readonly }"
+      :class="{ 'vp-slider--readonly': readonly, 'vp--disabled': disabled }"
     >
       <div
         ref="trackRef"

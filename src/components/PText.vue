@@ -17,17 +17,25 @@ type Props = {
   label?: string
   tooltip?: string
   readonly?: boolean
+  disabled?: boolean
 } & (Polling | Model)
 
-const props = defineProps<Props>()
+const {
+  label,
+  tooltip,
+  readonly,
+  disabled,
+  poll,
+  modelValue,
+} = defineProps<Props>()
 const emit = defineEmits<{ 'update:modelValue': [string] }>()
 
 const modelRef = computed<string | undefined>({
-  get: () => props.modelValue,
+  get: () => modelValue,
   set: (val: string | undefined) => emit('update:modelValue', val!),
 })
 
-const model = usePollingOrModel(props.poll, modelRef)
+const model = usePollingOrModel(poll, modelRef)
 </script>
 <template>
   <PLabel
@@ -39,13 +47,14 @@ const model = usePollingOrModel(props.poll, modelRef)
     </template>
     <div
       class="vp-text"
-      :class="{ 'vp-text--readonly': readonly }"
+      :class="{ 'vp-text--readonly': readonly, 'vp--disabled': disabled }"
     >
       <input
         class="vp-text__input"
         type="text"
         :value="model"
         :readonly="readonly"
+        :disabled="disabled"
         @input="model = ($event.target as HTMLInputElement).value"
       >
     </div>

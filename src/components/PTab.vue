@@ -6,20 +6,26 @@ const model = defineModel<number>({ default: 0 })
 const {
   tabs,
   tooltips,
+  disabled,
 } = defineProps<{
   tabs: string[]
   tooltips?: string[]
+  disabled?: boolean
 }>()
 
 const { floatingStyles, visible, activeText, show, hide } = useTooltip()
 const config = usePaneConfig()
 
 function setTab(i: number) {
+  if (disabled) return
   model.value = i
 }
 </script>
 <template>
-  <div class="vp-tab">
+  <div
+    class="vp-tab"
+    :class="{ 'vp--disabled': disabled }"
+  >
     <div class="vp-tab__title-bar">
       <div
         v-for="(tab, i) in tabs"

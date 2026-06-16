@@ -14,6 +14,7 @@ const {
   max,
   decimalPlaces,
   showLastValue = true,
+  disabled = false,
 } = defineProps<{
   poll?: PollingRef<number>
   historyLength?: number
@@ -24,6 +25,7 @@ const {
   max?: number
   decimalPlaces?: number
   showLastValue?: boolean
+  disabled?: boolean
 }>()
 
 if (poll !== undefined && values !== undefined) {
@@ -91,7 +93,10 @@ const polylinePoints = computed(() => {
         {{ lastValue }}
       </slot>
     </template>
-    <div class="vp-graph">
+    <div
+      class="vp-graph"
+      :class="{'vp--disabled': disabled }"
+    >
       <svg
         class="vp-graph__svg"
         viewBox="0 0 100 100"

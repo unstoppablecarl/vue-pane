@@ -20,20 +20,28 @@ type Props = {
   min?: number
   max?: number
   readonly?: boolean
+  disabled?: boolean
 } & (Polling | Model)
 
-const props = withDefaults(defineProps<Props>(), {
-  min: -1,
-  max: 1,
-})
+const {
+  label,
+  tooltip,
+  readonly,
+  disabled,
+  poll,
+  modelValue,
+  min = -1,
+  max = 1,
+} = defineProps<Props>()
+
 const emit = defineEmits<{ 'update:modelValue': [{ x: number, y: number }] }>()
 
 const modelRef = computed<{ x: number, y: number } | undefined>({
-  get: () => props.modelValue,
+  get: () => modelValue,
   set: (val: any) => emit('update:modelValue', val!),
 })
 
-const model = usePollingOrModel(props.poll, modelRef)
+const model = usePollingOrModel(poll, modelRef)
 
 const isOpen = ref(false)
 const panelRef = ref<HTMLElement | null>(null)
@@ -46,23 +54,23 @@ const localX = computed(() => model.value.x.toFixed(3))
 const localY = computed(() => model.value.y.toFixed(3))
 
 function clamp(val: number): number {
-  return Math.max(props.min, Math.min(props.max, val))
+  return Math.max(min, Math.min(max, val))
 }
 
 function onXBlur(e: Event) {
-  if (props.readonly) return
+  if (readonly || disabled) return
   const val = parseFloat((e.target as HTMLInputElement).value)
   if (!isNaN(val)) model.value = { x: clamp(val), y: model.value.y }
 }
 
 function onYBlur(e: Event) {
-  if (props.readonly) return
+  if (readonly || disabled) return
   const val = parseFloat((e.target as HTMLInputElement).value)
   if (!isNaN(val)) model.value = { x: model.value.x, y: clamp(val) }
 }
 
 function toggle() {
-  if (props.readonly) return
+  if (readonly || disabled) return
   isOpen.value = !isOpen.value
 }
 
@@ -89,13 +97,13 @@ onMounted(() => {
 })
 
 const crosshairX = computed(() => {
-  const range = props.max - props.min
-  return ((model.value.x - props.min) / range) * canvasSize
+  const range = max - min
+  return ((model.value.x - min) / range) * canvasSize
 })
 
 const crosshairY = computed(() => {
-  const range = props.max - props.min
-  return canvasSize - ((model.value.y - props.min) / range) * canvasSize
+  const range = max - min
+  return canvasSize - ((model.value.y - min) / range) * canvasSize
 })
 
 let canvasDragging = false
@@ -105,15 +113,15 @@ function posToValue(e: PointerEvent) {
   const rect = canvas.getBoundingClientRect()
   const rx = (e.clientX - rect.left) / rect.width
   const ry = 1 - (e.clientY - rect.top) / rect.height
-  const range = props.max - props.min
+  const range = max - min
   return {
-    x: clamp(props.min + rx * range),
-    y: clamp(props.min + ry * range),
+    x: clamp(min + rx * range),
+    y: clamp(min + ry * range),
   }
 }
 
 function onCanvasDown(e: PointerEvent) {
-  if (props.readonly) return
+  if (readonly || disabled) return
   e.preventDefault()
   ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
   canvasDragging = true
@@ -121,7 +129,7 @@ function onCanvasDown(e: PointerEvent) {
 }
 
 function onCanvasMove(e: PointerEvent) {
-  if (props.readonly || !canvasDragging) return
+  if (readonly || disabled || !canvasDragging) return
   model.value = posToValue(e)
 }
 
@@ -139,7 +147,7 @@ function onCanvasUp() {
     </template>
     <div
       class="vp-point-2d"
-      :class="{ 'vp-point-2d--expanded': isOpen, 'vp-point-2d--complete': isComplete, 'vp-point-2d--readonly': readonly }"
+      :class="{ 'vp-point-2d--expanded': isOpen, 'vp-point-2d--complete': isComplete, 'vp-point-2d--readonly': readonly, 'vp--disabled': disabled }"
     >
       <div class="vp-point-2d__header">
         <button
@@ -167,6 +175,7 @@ function onCanvasUp() {
                 type="text"
                 :value="localX"
                 :readonly="readonly"
+                :disabled="disabled"
                 @blur="onXBlur"
                 @keydown.enter="(e) => (e.target as HTMLElement).blur()"
               >
@@ -181,6 +190,7 @@ function onCanvasUp() {
                 type="text"
                 :value="localY"
                 :readonly="readonly"
+                :disabled="disabled"
                 @blur="onYBlur"
                 @keydown.enter="(e) => (e.target as HTMLElement).blur()"
               >

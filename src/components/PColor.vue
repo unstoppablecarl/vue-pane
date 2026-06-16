@@ -21,17 +21,26 @@ type Props = {
   tooltip?: string
   alpha?: boolean
   readonly?: boolean
+  disabled?: boolean
 } & (Polling | Model)
 
-const props = defineProps<Props>()
+const {
+  label,
+  tooltip,
+  alpha = false,
+  readonly = false,
+  disabled = false,
+  poll,
+  modelValue,
+} = defineProps<Props>()
 const emit = defineEmits<{ 'update:modelValue': [string] }>()
 
 const modelRef = computed<string | undefined>({
-  get: () => props.modelValue,
+  get: () => modelValue,
   set: (val: string | undefined) => emit('update:modelValue', val!),
 })
 
-const model = usePollingOrModel(props.poll, modelRef)
+const model = usePollingOrModel(poll, modelRef)
 
 const isOpen = ref(false)
 const swatchRef = ref<HTMLElement | null>(null)
@@ -44,24 +53,24 @@ const { floatingStyles } = useFloating(swatchRef, pickerRef, {
 })
 
 function toggle() {
-  if (props.readonly) return
+  if (readonly || disabled) return
   isOpen.value = !isOpen.value
 }
 
 function onPickerChange(color: unknown) {
-  if (props.readonly) return
+  if (readonly || disabled) return
   const tc = tinycolor(color as Parameters<typeof tinycolor>[0])
   if (tc.isValid()) {
-    model.value = props.alpha ? tc.toHex8String() : tc.toHexString()
+    model.value = alpha ? tc.toHex8String() : tc.toHexString()
   }
 }
 
 function onHexChange(e: Event) {
-  if (props.readonly) return
+  if (readonly || disabled) return
   const val = (e.target as HTMLInputElement).value
   const tc = tinycolor(val)
   if (tc.isValid()) {
-    model.value = props.alpha ? tc.toHex8String() : tc.toHexString()
+    model.value = alpha ? tc.toHex8String() : tc.toHexString()
   }
 }
 
@@ -85,7 +94,10 @@ onUnmounted(() => document.removeEventListener('pointerdown', onPointerDown))
     </template>
     <div
       class="vp-color"
-      :class="{ 'vp-color--readonly': readonly }"
+      :class="{
+        'vp-color--readonly': readonly,
+        'vp--disabled': disabled,
+      }"
     >
       <div class="vp-color__header">
         <div

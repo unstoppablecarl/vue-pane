@@ -18,20 +18,29 @@ type Props = {
   tooltip?: string
   options: { value: string | number, label: string }[]
   readonly?: boolean
+  disabled?: boolean
 } & (Polling | Model)
 
-const props = defineProps<Props>()
+const {
+  label,
+  tooltip,
+  options,
+  readonly,
+  disabled,
+  poll,
+  modelValue,
+} = defineProps<Props>()
 const emit = defineEmits<{ 'update:modelValue': [string | number] }>()
 
 const modelRef = computed<string | number | undefined>({
-  get: () => props.modelValue,
+  get: () => modelValue,
   set: (val: string | number | undefined) => emit('update:modelValue', val!),
 })
 
-const model = usePollingOrModel(props.poll, modelRef)
+const model = usePollingOrModel(poll, modelRef)
 
 function onChange(e: Event) {
-  if (!props.readonly) model.value = (e.target as HTMLSelectElement).value
+  if (!readonly) model.value = (e.target as HTMLSelectElement).value
 }
 </script>
 <template>
@@ -44,11 +53,12 @@ function onChange(e: Event) {
     </template>
     <div
       class="vp-select"
-      :class="{ 'vp-select--readonly': readonly }"
+      :class="{ 'vp-select--readonly': readonly, 'vp--disabled': disabled }"
     >
       <select
         class="vp-select__input"
         :value="model"
+        :disabled="disabled"
         @change="onChange"
       >
         <option

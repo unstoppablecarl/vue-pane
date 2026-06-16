@@ -20,19 +20,28 @@ type Props = {
   max?: number
   step?: number
   readonly?: boolean
+  disabled?: boolean
 } & (Polling | Model)
 
-const props = withDefaults(defineProps<Props>(), {
-  step: 1,
-})
+const {
+  label,
+  tooltip,
+  readonly,
+  disabled,
+  poll,
+  modelValue,
+  min,
+  max,
+  step = 1,
+} = defineProps<Props>()
 const emit = defineEmits<{ 'update:modelValue': [number] }>()
 
 const modelRef = computed<number | undefined>({
-  get: () => props.modelValue,
+  get: () => modelValue,
   set: (val: number | undefined) => emit('update:modelValue', val!),
 })
 
-const model = usePollingOrModel(props.poll, modelRef)
+const model = usePollingOrModel(poll, modelRef)
 
 const isDragging = ref(false)
 const isFocused = ref(false)
@@ -46,13 +55,13 @@ watch(model, (val) => {
 })
 
 function clamp(val: number): number {
-  if (props.min !== undefined) val = Math.max(props.min, val)
-  if (props.max !== undefined) val = Math.min(props.max, val)
+  if (min !== undefined) val = Math.max(min, val)
+  if (max !== undefined) val = Math.min(max, val)
   return val
 }
 
 function snapToStep(val: number): number {
-  return Math.round(val / props.step) * props.step
+  return Math.round(val / step) * step
 }
 
 const guideBodyPath = computed(() => {
@@ -69,7 +78,7 @@ const guideHeadPath = computed(() => {
 })
 
 const tooltipText = computed(() => {
-  const decimals = props.step < 1 ? (String(props.step).split('.')[1]?.length ?? 0) : 0
+  const decimals = step < 1 ? (String(step).split('.')[1]?.length ?? 0) : 0
   return model.value.toFixed(decimals)
 })
 
@@ -88,16 +97,17 @@ function onBlur() {
 }
 
 function onKeydown(e: KeyboardEvent) {
+  if (disabled) return
   if (e.key === 'Enter') {
     (e.target as HTMLInputElement).blur()
   } else if (e.key === 'ArrowUp') {
     e.preventDefault()
     const multiplier = e.shiftKey ? 10 : 1
-    model.value = clamp(model.value + props.step * multiplier)
+    model.value = clamp(model.value + step * multiplier)
   } else if (e.key === 'ArrowDown') {
     e.preventDefault()
     const multiplier = e.shiftKey ? 10 : 1
-    model.value = clamp(model.value - props.step * multiplier)
+    model.value = clamp(model.value - step * multiplier)
   }
 }
 
@@ -105,6 +115,7 @@ let dragStartX = 0
 let dragStartValue = 0
 
 function onKnobPointerDown(e: PointerEvent) {
+  if (disabled) return
   e.preventDefault()
   ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
   isDragging.value = true
@@ -138,19 +149,20 @@ function onKnobPointerUp() {
     </template>
     <div
       class="vp-text vp-text--number"
-      :class="{ 'vp-text--dragging': isDragging, 'vp-text--readonly': readonly }"
+      :class="{ 'vp-text--dragging': isDragging, 'vp-text--readonly': readonly, 'vp--disabled': disabled }"
     >
       <input
         v-model="localValue"
         class="vp-text__input"
         type="text"
         :readonly="readonly"
+        :disabled="disabled"
         @focus="onFocus"
         @blur="onBlur"
         @keydown="onKeydown"
       >
       <div
-        v-if="!readonly"
+        v-if="!readonly && !disabled"
         class="vp-text__knob"
         @pointerdown="onKnobPointerDown"
         @pointermove="onKnobPointerMove"
